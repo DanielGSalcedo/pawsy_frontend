@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Blog from './components/home-page/Blog.jsx';
 import SingUp from './components/sign-up/SignUp.jsx';
 import SingIn from './components/login/SignIn.jsx';
-import UserProfile from "./components/user-profile-page/UserProfile.jsx";
+import PasswordReset from './components/password-reset/PasswordReset.jsx';
 
 function App() {
     return (

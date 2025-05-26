@@ -15,7 +15,8 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import { GoogleIcon, FacebookIcon, SitemarkIcon, PawsyIcon } from './CustomIcons';
+import { GoogleIcon, FacebookIcon, PawsyIcon } from './CustomIcons';
+import { userApi } from '../../scripts/userApi';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -37,7 +38,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 const SignUpContainer = styled(Stack)(({ theme }) => ({
-  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
+  // height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
+  overflow: 'auto',
   minHeight: '100%',
   padding: theme.spacing(2),
   [theme.breakpoints.up('sm')]: {
@@ -46,7 +48,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   '&::before': {
     content: '""',
     display: 'block',
-    position: 'absolute',
+    position: 'fixed',
     zIndex: -1,
     inset: 0,
     backgroundImage:
@@ -122,13 +124,16 @@ export default function SignUp(props) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
+    const user = {
+      nombre: data.get('name'),
       email: data.get('email'),
-      password: data.get('password'),
-      phone: data.get('phone')
-    });
+      clave: data.get('password'),
+      telefono: data.get('phone')
+    }; 
+    console.log(user);
+
+    event.preventDefault();
+    handleSignUp(user);
   };
 
   return (
@@ -258,4 +263,15 @@ export default function SignUp(props) {
       </SignUpContainer>
     </AppTheme>
   );
+}
+
+async function handleSignUp(user) {
+  try {
+      await userApi.signUp(user);
+    } catch (error) {
+      console.error('Error signing up:', error);
+      alert('Error signing up. Please try again.');
+      return;
+    }
+    window.location.href = '/';
 }
