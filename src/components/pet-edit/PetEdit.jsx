@@ -1,167 +1,235 @@
 import React, { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import MuiCard from '@mui/material/Card';
+import {
+  Box,
+  Button,
+  Typography,
+  CircularProgress,
+  Avatar,
+  Divider,
+  Stack,
+  Card as MuiCard,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import CircularProgress from '@mui/material/CircularProgress';
-import Avatar from '@mui/material/Avatar';
+import { useNavigate } from 'react-router-dom';
 import PetsIcon from '@mui/icons-material/Pets';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 
+// Contenedor principal con gradiente de fondo
 const ProfileContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
   minHeight: '100vh',
   padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(4),
-  },
+  [theme.breakpoints.up('sm')]: { padding: theme.spacing(4) },
   '&::before': {
     content: '""',
-    display: 'block',
     position: 'fixed',
-    zIndex: -1,
     inset: 0,
+    zIndex: -1,
     backgroundImage:
       'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
     ...theme.applyStyles('dark', {
       backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+        'radial-gradient(at 50% 50%, hsla(210,100%,16%,0.5), hsl(220,30%,5%))',
     }),
   },
 }));
 
+// Tarjeta central
 const Card = styled(MuiCard)(({ theme }) => ({
+  width: '100%',
+  maxWidth: 520,
+  margin: 'auto',
+  padding: theme.spacing(4),
+  borderRadius: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
-    maxWidth: '500px',
-  },
+  gap: theme.spacing(3),
   boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+    'hsla(220,30%,5%,0.05) 0px 5px 15px, hsla(220,25%,10%,0.05) 0px 15px 35px -5px',
   ...theme.applyStyles('dark', {
+    backgroundColor: 'hsl(222,45%,8%)',
     boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
+      'hsla(220,30%,5%,0.5) 0px 5px 15px, hsla(220,25%,10%,0.08) 0px 15px 35px -5px',
   }),
 }));
 
-export default function PetEdit() {
-  const [form, setForm] = useState({
-    nombre: '',
-    tipo: '',
-    edad: '',
-    descripcion: '',
-  });
+// Wrapper uniforme para cada campo
+const Field = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  marginBottom: theme.spacing(2),
+}));
 
-  const [loading, setLoading] = useState(true);
+// Nuevo textarea estilizado
+const StyledTextarea = styled('textarea')(({ theme }) => ({
+  width: '100%',
+  minHeight: 120,
+  padding: theme.spacing(1.5),
+  fontFamily: theme.typography.fontFamily,
+  fontSize: theme.typography.body1.fontSize,
+  color: theme.palette.text.primary,
+  backgroundColor: theme.palette.background.default,
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: theme.shape.borderRadius,
+  resize: 'vertical',
+  outline: 'none',
+  '&:focus': {
+    borderColor: theme.palette.primary.main,
+    boxShadow: `0 0 0 2px ${theme.palette.primary.main}33`,
+  },
+}));
+
+export default function PetEdit() {
+  const [form, setForm] = useState(null);
   const [saving, setSaving] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
+    const t = setTimeout(() => {
       setForm({
         nombre: 'Max',
         tipo: 'Perro',
         edad: '3',
         descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
       });
-      setLoading(false);
-    }, 1000);
+    }, 500);
+    return () => clearTimeout(t);
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm(f => ({ ...f, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     setSaving(true);
-
-    // Aquí se integraría con un backend real en el futuro
     setTimeout(() => {
       console.log('Mascota actualizada:', form);
+      alert('Cambios guardados (simulado)');
       setSaving(false);
-      alert('Cambios guardados correctamente (simulado)');
     }, 1000);
   };
+
+  if (!form) {
+    return (
+      <AppTheme>
+        <ProfileContainer justifyContent="center" alignItems="center">
+          <CircularProgress />
+        </ProfileContainer>
+      </AppTheme>
+    );
+  }
 
   return (
     <AppTheme>
-      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-      <ProfileContainer direction="column" justifyContent="center" alignItems="center">
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Card variant="outlined">
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              <Avatar sx={{ bgcolor: 'primary.main', width: 64, height: 64 }}>
-                <PetsIcon fontSize="large" />
-              </Avatar>
-              <Typography variant="h5">Editar Mascota</Typography>
-              <Divider sx={{ width: '100%' }} />
+      <ColorModeSelect sx={{ position: 'fixed', top: 16, right: 16 }} />
+      <ProfileContainer alignItems="center" justifyContent="center">
+        <Card>
+          {/* HEADER */}
+          <Stack alignItems="center" spacing={1}>
+            <Avatar sx={{ bgcolor: 'primary.main', width: 72, height: 72, boxShadow: 3 }}>
+              <PetsIcon fontSize="large" />
+            </Avatar>
+            <Typography variant="h5" fontWeight="bold">
+              Editar Mascota
+            </Typography>
+          </Stack>
 
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
+          <Divider />
+
+          {/* FORM */}
+          <Box component="form" onSubmit={handleSubmit}>
+            <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Nombre *
+              </Typography>
+              <input
+                type="text"
+                name="nombre"
+                value={form.nombre}
+                onChange={handleChange}
+                required
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'transparent',
+                  color: 'inherit',
+                }}
+              />
+            </Field>
+
+            <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Tipo *
+              </Typography>
+              <input
+                type="text"
+                name="tipo"
+                value={form.tipo}
+                onChange={handleChange}
+                required
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'transparent',
+                  color: 'inherit',
+                }}
+              />
+            </Field>
+
+            <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Edad
+              </Typography>
+              <input
+                type="number"
+                name="edad"
+                value={form.edad}
+                onChange={handleChange}
+                min={0}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'transparent',
+                  color: 'inherit',
+                }}
+              />
+            </Field>
+
+            <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Descripción
+              </Typography>
+              <StyledTextarea
+                name="descripcion"
+                value={form.descripcion}
+                onChange={handleChange}
+              />
+            </Field>
+
+            <Stack direction="row" spacing={2} mt={2}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                onClick={() => navigate(-1)}
               >
-                <TextField
-                  label="Nombre"
-                  name="nombre"
-                  value={form.nombre}
-                  onChange={handleChange}
-                  required
-                  variant="outlined"
-                  fullWidth
-                />
-                <TextField
-                  label="Tipo"
-                  name="tipo"
-                  value={form.tipo}
-                  onChange={handleChange}
-                  required
-                  variant="outlined"
-                  fullWidth
-                />
-                <TextField
-                  label="Edad"
-                  name="edad"
-                  type="number"
-                  value={form.edad}
-                  onChange={handleChange}
-                  inputProps={{ min: 0 }}
-                  variant="outlined"
-                  fullWidth
-                />
-                <TextField
-                    label="Descripción"
-                    name="descripcion"
-                    multiline
-                    rows={4}
-                    value={form.descripcion}
-                    onChange={handleChange}
-                    variant="outlined"
-                    fullWidth
-                    InputLabelProps={{ shrink: !!form.descripcion }}
-                />
-
-                <Button type="submit" variant="contained" disabled={saving}>
-                  {saving ? 'Guardando...' : 'Guardar Cambios'}
-                </Button>
-              </Box>
-            </Box>
-          </Card>
-        )}
+                Volver
+              </Button>
+              <Button type="submit" variant="contained" fullWidth disabled={saving}>
+                {saving ? 'Guardando...' : 'Guardar Cambios'}
+              </Button>
+            </Stack>
+          </Box>
+        </Card>
       </ProfileContainer>
     </AppTheme>
   );
