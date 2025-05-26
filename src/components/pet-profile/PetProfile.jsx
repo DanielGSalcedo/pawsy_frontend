@@ -11,8 +11,11 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CategoryIcon from '@mui/icons-material/Category';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
-// Estilos del contenedor
 const ProfileContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
   minHeight: '100vh',
@@ -36,7 +39,6 @@ const ProfileContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-// Card con estilo compartido
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -46,11 +48,13 @@ const Card = styled(MuiCard)(({ theme }) => ({
   gap: theme.spacing(2),
   margin: 'auto',
   [theme.breakpoints.up('sm')]: {
-    maxWidth: '500px',
+    maxWidth: '520px',
   },
+  borderRadius: theme.spacing(2),
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
   ...theme.applyStyles('dark', {
+    backgroundColor: 'hsl(222,45%,8%)',
     boxShadow:
       'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
   }),
@@ -59,10 +63,10 @@ const Card = styled(MuiCard)(({ theme }) => ({
 export default function PetProfile() {
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Aquí irá el fetch a la API en el futuro
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setPet({
         nombre: 'Max',
         tipo: 'Perro',
@@ -70,7 +74,8 @@ export default function PetProfile() {
         descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
       });
       setLoading(false);
-    }, 1000); // Simula un retardo de red de 1 segundo
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -81,21 +86,54 @@ export default function PetProfile() {
           <CircularProgress />
         ) : (
           <Card variant="outlined">
+            {/* Botón de Volver */}
+            <Button
+              startIcon={<ArrowBackIcon />}
+              onClick={() => navigate(-1)}
+              sx={{ alignSelf: 'flex-start', mb: 1, textTransform: 'none' }}
+            >
+              Volver
+            </Button>
+
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              <Avatar sx={{ bgcolor: 'primary.main', width: 64, height: 64 }}>
+              <Avatar sx={{ bgcolor: 'primary.main', width: 72, height: 72, boxShadow: 3 }}>
                 <PetsIcon fontSize="large" />
               </Avatar>
-              <Typography variant="h5" component="h1">
+              <Typography variant="h5" component="h1" fontWeight="bold">
                 Perfil de {pet.nombre}
               </Typography>
-              <Divider sx={{ width: '100%' }} />
-              <Typography variant="body1"><strong>Tipo:</strong> {pet.tipo}</Typography>
-              <Typography variant="body1"><strong>Edad:</strong> {pet.edad} años</Typography>
-              <Typography variant="body1"><strong>Descripción:</strong></Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
+              <Divider sx={{ width: '100%', my: 1 }} />
+
+              <Stack direction="row" spacing={1} alignItems="center">
+                <CategoryIcon color="action" />
+                <Typography variant="body1"><strong>Tipo:</strong> {pet.tipo}</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <CalendarTodayIcon color="action" />
+                <Typography variant="body1"><strong>Edad:</strong> {pet.edad} años</Typography>
+              </Stack>
+
+              <Typography variant="body1" sx={{ mt: 2 }}><strong>Descripción:</strong></Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  textAlign: 'center',
+                  px: 2,
+                  backgroundColor: theme => theme.palette.action.hover,
+                  borderRadius: 1,
+                  py: 1,
+                }}
+              >
                 {pet.descripcion}
               </Typography>
-              <Button variant="contained" sx={{ mt: 2 }}>
+
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ mt: 3, textTransform: 'none' }}
+                onClick={() => navigate('/editar')}
+              >
                 Editar perfil
               </Button>
             </Box>
