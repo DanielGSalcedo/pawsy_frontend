@@ -36,4 +36,30 @@ export const userApi = {
     console.log("New Password:", newPassword);
     return true;
   },
+
+  async signIn(user) {
+    // alert(user);
+    if (user == null) {
+      throw new Error("User data is required");
+    }
+    // return true;
+    try {
+        const response = await fetch(`${API_URL}/users-login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+          },
+          body: JSON.stringify(user),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to sign in");
+        }
+        return await response.json();
+    }
+    catch (error) {
+        console.error("Error during sign in:", error);
+        throw error;
+    }
+  },
 };
