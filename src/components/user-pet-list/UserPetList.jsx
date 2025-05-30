@@ -10,10 +10,12 @@ import {
   Divider,
   Snackbar,
   Alert,
+  Fab, // Nuevo componente añadido
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PetsIcon from '@mui/icons-material/Pets';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete'; // Nuevo ícono añadido
 import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
@@ -369,6 +371,30 @@ export default function UserPetList() {
         </Box>
       </DashboardContainer>
       
+      {/* Botón flotante para eliminar mascotas (FAB) */}
+      {!loading && pets.length > 0 && (
+        <Fab
+          color="error"
+          aria-label="eliminar"
+          onClick={() => navigate('/remove-pet')}
+          sx={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 1000,
+            backgroundColor: 'error.main',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: 'error.dark',
+              transform: 'scale(1.05)',
+            },
+            transition: 'transform 0.2s, background-color 0.2s',
+          }}
+        >
+          <DeleteIcon />
+        </Fab>
+      )}
+
       {/* Snackbar para mostrar errores */}
       <Snackbar
         open={!!error}
