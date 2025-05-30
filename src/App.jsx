@@ -15,7 +15,7 @@ function App() {
         <Route path="/sing-in" element={<SingIn />} />
         <Route path="/recover-password" element={<PasswordReset />} />
         <Route path="/user-profile" element={<UserProfile />} />
-        <Route path="/mascotas" element={<PetUserList />} />
+        <Route path="/user-pet-list" element={<PetUserList />} />
       </Routes>
     </BrowserRouter>
   );
