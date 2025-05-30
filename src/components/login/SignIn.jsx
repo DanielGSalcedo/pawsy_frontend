@@ -17,6 +17,7 @@ import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, PawsyIcon } from '../sign-up/CustomIcons';
 import ForgotPassword from './ForgotPassword';
+import { userApi } from '../../scripts/userApi';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -82,10 +83,13 @@ export default function SignIn(props) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
+    const user = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    console.log(user);
+    event.preventDefault();
+    handleSignIn(user);
   };
 
   const validateInputs = () => {
@@ -197,37 +201,20 @@ export default function SignIn(props) {
               Forgot your password?
             </Link>
           </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Sign in with Facebook
-            </Button>
-            <Typography sx={{ textAlign: 'center' }}>
-              Don&apos;t have an account?{' '}
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
-                Sign up
-              </Link>
-            </Typography>
-          </Box>
         </Card>
       </SignInContainer>
     </AppTheme>
   );
+}
+
+async function handleSignIn(user) {
+  try {
+      const response = await userApi.signIn(user);
+      console.log(response.token);
+      // window.location.href = '/';
+    } catch (error) {
+      console.error('Error signing in:', error);
+      alert('Error signing in. Please try again.');
+      return;
+    }
 }
