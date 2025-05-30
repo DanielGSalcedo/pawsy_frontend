@@ -1,13 +1,19 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
-import PetProfile from './components/pet-profile/PetProfile';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Blog from "./components/home-page/Blog.jsx";
+import SingUp from "./components/sign-up/SignUp.jsx";
+import SingIn from "./components/login/SignIn.jsx";
+import PasswordReset from "./components/password-reset/PasswordReset.jsx";
+import UserProfile from "./components/user-profile-page/UserProfile.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<PetProfile />} />
+        <Route path="/*" element={<Blog />} />
+        <Route path="/sing-up" element={<SingUp />} />
+        <Route path="/sing-in" element={<SingIn />} />
+        <Route path="/recover-password" element={<PasswordReset />} />
+        <Route path="/user-profile" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );
