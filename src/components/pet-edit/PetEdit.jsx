@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -10,12 +11,11 @@ import {
   Card as MuiCard,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import PetsIcon from '@mui/icons-material/Pets';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
+// import axios from 'axios'; // Activar luego para conexión real
 
-// Contenedor principal con gradiente de fondo
 const ProfileContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
   minHeight: '100vh',
@@ -35,7 +35,6 @@ const ProfileContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-// Tarjeta central
 const Card = styled(MuiCard)(({ theme }) => ({
   width: '100%',
   maxWidth: 520,
@@ -54,14 +53,28 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-// Wrapper uniforme para cada campo
 const Field = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   marginBottom: theme.spacing(2),
 }));
 
-// Nuevo textarea estilizado
+const StyledInput = styled('input')(({ theme }) => ({
+  width: '100%',
+  padding: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
+  background: theme.palette.background.default,
+  color: theme.palette.text.primary,
+  outline: 'none',
+  fontFamily: theme.typography.fontFamily,
+  fontSize: theme.typography.body1.fontSize,
+  '&:focus': {
+    borderColor: theme.palette.primary.main,
+    boxShadow: `0 0 0 2px ${theme.palette.primary.main}33`,
+  },
+}));
+
 const StyledTextarea = styled('textarea')(({ theme }) => ({
   width: '100%',
   minHeight: 120,
@@ -81,12 +94,14 @@ const StyledTextarea = styled('textarea')(({ theme }) => ({
 }));
 
 export default function PetEdit() {
+  const { id } = useParams();
   const [form, setForm] = useState(null);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const t = setTimeout(() => {
+    // Simulación de carga de datos
+    const timer = setTimeout(() => {
       setForm({
         nombre: 'Max',
         tipo: 'Perro',
@@ -94,8 +109,14 @@ export default function PetEdit() {
         descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
       });
     }, 500);
-    return () => clearTimeout(t);
-  }, []);
+
+    return () => clearTimeout(timer);
+
+    // Código real backend:
+    // axios.get(`http://localhost:4000/api/pets/${id}`)
+    //   .then(res => setForm(res.data))
+    //   .catch(err => console.error(err));
+  }, [id]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -109,7 +130,16 @@ export default function PetEdit() {
       console.log('Mascota actualizada:', form);
       alert('Cambios guardados (simulado)');
       setSaving(false);
+      navigate(`/perfil/${id}`);
     }, 1000);
+
+    // Código real backend:
+    // axios.put(`http://localhost:4000/api/pets/${id}`, form)
+    //   .then(() => navigate(`/perfil/${id}`))
+    //   .catch(err => {
+    //     alert("Error al guardar");
+    //     setSaving(false);
+    //   });
   };
 
   if (!form) {
@@ -127,10 +157,18 @@ export default function PetEdit() {
       <ColorModeSelect sx={{ position: 'fixed', top: 16, right: 16 }} />
       <ProfileContainer alignItems="center" justifyContent="center">
         <Card>
-          {/* HEADER */}
           <Stack alignItems="center" spacing={1}>
-            <Avatar sx={{ bgcolor: 'primary.main', width: 72, height: 72, boxShadow: 3 }}>
-              <PetsIcon fontSize="large" />
+            <Avatar
+              sx={{
+                bgcolor: 'primary.main',
+                width: 72,
+                height: 72,
+                boxShadow: 3,
+                background: theme =>
+                  `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              }}
+            >
+              <PetsIcon fontSize="large" sx={{ color: 'white' }} />
             </Avatar>
             <Typography variant="h5" fontWeight="bold">
               Editar Mascota
@@ -139,26 +177,17 @@ export default function PetEdit() {
 
           <Divider />
 
-          {/* FORM */}
           <Box component="form" onSubmit={handleSubmit}>
             <Field>
               <Typography variant="body2" color="text.secondary" mb={0.5}>
                 Nombre *
               </Typography>
-              <input
+              <StyledInput
                 type="text"
                 name="nombre"
                 value={form.nombre}
                 onChange={handleChange}
                 required
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'transparent',
-                  color: 'inherit',
-                }}
               />
             </Field>
 
@@ -166,20 +195,12 @@ export default function PetEdit() {
               <Typography variant="body2" color="text.secondary" mb={0.5}>
                 Tipo *
               </Typography>
-              <input
+              <StyledInput
                 type="text"
                 name="tipo"
                 value={form.tipo}
                 onChange={handleChange}
                 required
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'transparent',
-                  color: 'inherit',
-                }}
               />
             </Field>
 
@@ -187,20 +208,12 @@ export default function PetEdit() {
               <Typography variant="body2" color="text.secondary" mb={0.5}>
                 Edad
               </Typography>
-              <input
+              <StyledInput
                 type="number"
                 name="edad"
                 value={form.edad}
                 onChange={handleChange}
                 min={0}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'transparent',
-                  color: 'inherit',
-                }}
               />
             </Field>
 
