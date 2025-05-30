@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MuiCard from '@mui/material/Card';
@@ -14,7 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CategoryIcon from '@mui/icons-material/Category';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from 'react-router-dom';
+// import axios from 'axios'; // Listo para usar después
 
 const ProfileContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
@@ -61,22 +62,37 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function PetProfile() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
+    // Simular carga desde backend
     const timer = setTimeout(() => {
       setPet({
+        id,
         nombre: 'Max',
         tipo: 'Perro',
         edad: 3,
         descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
       });
       setLoading(false);
-    }, 1000);
+    }, 800);
+
     return () => clearTimeout(timer);
-  }, []);
+
+    // ⚠️ Código real para usar luego:
+    // axios.get(`http://localhost:4000/api/pets/${id}`)
+    //   .then(res => {
+    //     setPet(res.data);
+    //     setLoading(false);
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //     setLoading(false);
+    //   });
+  }, [id]);
 
   return (
     <AppTheme>
@@ -86,7 +102,6 @@ export default function PetProfile() {
           <CircularProgress />
         ) : (
           <Card variant="outlined">
-            {/* Botón de Volver */}
             <Button
               startIcon={<ArrowBackIcon />}
               onClick={() => navigate(-1)}
@@ -96,18 +111,33 @@ export default function PetProfile() {
             </Button>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              <Avatar sx={{ bgcolor: 'primary.main', width: 72, height: 72, boxShadow: 3 }}>
-                <PetsIcon fontSize="large" />
+              <Avatar
+                sx={{
+                  width: 80,
+                  height: 80,
+                  background: theme =>
+                    `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  boxShadow: 4,
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                  },
+                }}
+              >
+                <PetsIcon fontSize="large" sx={{ color: 'white' }} />
               </Avatar>
-              <Typography variant="h5" component="h1" fontWeight="bold">
+
+              <Typography variant="h5" component="h1" fontWeight="bold" textAlign="center">
                 Perfil de {pet.nombre}
               </Typography>
+
               <Divider sx={{ width: '100%', my: 1 }} />
 
               <Stack direction="row" spacing={1} alignItems="center">
                 <CategoryIcon color="action" />
                 <Typography variant="body1"><strong>Tipo:</strong> {pet.tipo}</Typography>
               </Stack>
+
               <Stack direction="row" spacing={1} alignItems="center">
                 <CalendarTodayIcon color="action" />
                 <Typography variant="body1"><strong>Edad:</strong> {pet.edad} años</Typography>
@@ -117,13 +147,17 @@ export default function PetProfile() {
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{
+                sx={theme => ({
                   textAlign: 'center',
                   px: 2,
-                  backgroundColor: theme => theme.palette.action.hover,
-                  borderRadius: 1,
-                  py: 1,
-                }}
+                  py: 1.5,
+                  borderRadius: 2,
+                  fontStyle: 'italic',
+                  backgroundColor:
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(0, 0, 0, 0.04)',
+                })}
               >
                 {pet.descripcion}
               </Typography>
@@ -131,7 +165,17 @@ export default function PetProfile() {
               <Button
                 variant="contained"
                 fullWidth
-                sx={{ mt: 3, textTransform: 'none' }}
+                sx={{
+                  mt: 3,
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                  borderRadius: 2,
+                  '&:hover': {
+                    backgroundColor: theme => theme.palette.primary.dark,
+                    boxShadow: theme => `0 4px 20px ${theme.palette.primary.main}55`,
+                  },
+                }}
                 onClick={() => navigate('/editar')}
               >
                 Editar perfil
