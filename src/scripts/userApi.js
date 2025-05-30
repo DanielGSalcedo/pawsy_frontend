@@ -1,56 +1,65 @@
-const API_URL = 'https://api.example.com';
+const API_URL = "https://6dd2de48-17d3-4059-992e-4feb7068963b.mock.pstmn.io";
+const API_KEY = "PMAK-68321a03671fac000137a1dc-5a67697d08fc443ed193b1fe9d684a691b";
 
 export const userApi = {
-    async signUp(user) {
-        alert(user);
-        if (user == null) {
-            throw new Error('User data is required');
-        }
-        return true;
-        // return fetch('https://api.example.com/signup', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(user),
-        // })
-        // .then(response => response.json())
-        // .catch(error => console.error('Error:', error));
-    },
-
-    async resetPassword(token, newPassword) {
-        if (token == null || newPassword == null) {
-            throw new Error('Token and new password are required');
-        }
-        console.log("Token:", token);
-        console.log("New Password:", newPassword);
-        return true;
-    },
-
-    /**
-     * Método para registrar una mascota.
-     * @param {Object} pet 
-     * @param {Integer} pet.edad - Edad de la mascota.
-     * @param {String} pet.nombre - Nombre de la mascota.
-     * @param {String} pet.descripcion - Descripción de la mascota. 
-     * @returns {Promise<boolean>}
-     */
-    // @param {Integer} pet.tipo - ID del tipo de mascota (1,2,3...). ????
-    // @param {Integer} pet.propietario - ID del propietario de mascota (1,2,3...). ????
-    async register_pet(pet) {
-        alert(pet);
-        if (pet == null) {
-            throw new Error('No ha llenado los datos de la mascota!');
-        }
-        return true;
-        // return fetch('https://api.example.com/signup', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(pet),
-        // })
-        // .then(response => response.json())
-        // .catch(error => console.error('Error:', error));
+  async signUp(user) {
+    alert(user);
+    if (user == null) {
+      throw new Error("User data is required");
     }
-}
+    // return true;
+    try {
+        const response = await fetch(`${API_URL}/users-signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+          },
+          body: JSON.stringify(user),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to sign up");
+        }
+        return await response.json();
+    }
+    catch (error) {
+        console.error("Error during sign up:", error);
+        throw error;
+    }
+  },
+
+  async resetPassword(token, newPassword) {
+    if (token == null || newPassword == null) {
+      throw new Error("Token and new password are required");
+    }
+    console.log("Token:", token);
+    console.log("New Password:", newPassword);
+    return true;
+  },
+
+  async signIn(user) {
+    // alert(user);
+    if (user == null) {
+      throw new Error("User data is required");
+    }
+    // return true;
+    try {
+        const response = await fetch(`${API_URL}/users-login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+          },
+          body: JSON.stringify(user),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to sign in");
+        }
+        return await response.json();
+    }
+    catch (error) {
+        console.error("Error during sign in:", error);
+        throw error;
+    }
+  },
+};
