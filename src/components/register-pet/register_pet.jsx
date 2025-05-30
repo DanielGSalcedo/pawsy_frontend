@@ -19,7 +19,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { userApi } from "../../scripts/userApi";
 
 const RegisterPetContainer = styled(Stack)(({ theme }) => ({
-  height: "calc(100vh - 80px)", // Fijo para ocupar toda la pantalla menos el margen
+  height: "calc(100vh - 80px)",
   minWidth: "calc(100vw - 80px)",
   margin: 40,
   padding: theme.spacing(2),
@@ -65,12 +65,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-// Función para obtener tipos de mascota desde un endpoint (simulada)
-// async function fetchPetTypes() {
-//   const response = await fetch('/api/pet-types');
-//   return await response.json();
-// }
-
 export default function RegisterPet(props) {
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
@@ -78,11 +72,7 @@ export default function RegisterPet(props) {
   const [tipo, setTipo] = React.useState(0);
   const [descripcion, setDescripcion] = React.useState("");
   const [nombre, setNombre] = React.useState("");
-
-  // const [tipos, setTipos] = React.useState([]);
-  // React.useEffect(() => {
-  //   fetchPetTypes().then(setTipos);
-  // }, []);
+  const [imageUrl, setImageUrl] = React.useState("");
 
   const validateInputs = () => {
     let isValid = true;
@@ -97,17 +87,30 @@ export default function RegisterPet(props) {
     return isValid;
   };
 
+  const handlePasteImage = async () => {
+    try {
+      const clipboardText = await navigator.clipboard.readText();
+      if (clipboardText.startsWith("https://")) {
+        setImageUrl(clipboardText);
+      } else {
+        alert("Texto no válido como vínculo");
+      }
+    } catch (err) {
+      console.error("Error al leer el portapapeles:", err);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validateInputs()) return;
     const pet = {
       nombre,
-      descripcion,
-      tipo: Number(tipo),
       edad: Number(edad),
-      propietario: 0,
+      link_imagen: imageUrl,
+      tipo: Number(tipo),
+      descripcion,
+      duenio: 0, // ????
     };
-    console.log("JSON a enviar:", JSON.stringify(pet));
     userApi.register_pet(pet);
   };
 
@@ -139,25 +142,62 @@ export default function RegisterPet(props) {
             }}
           >
             {/* Columna izquierda: área de carga de foto */}
-            <Box
-              sx={{
-                width: 180,
-                height: 180,
-                border: "2px dashed #aaa",
-                borderRadius: 2,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#f9f9f9",
-                color: "#888",
-                flexShrink: 0,
-                cursor: "pointer",
-                transition: "border-color 0.2s",
-                "&:hover": { borderColor: "#1976d2", color: "#1976d2" },
-              }}
-            >
-              <CloudUploadIcon sx={{ fontSize: 48, mb: 1 }} />
-            </Box>
+            <Stack spacing={1} sx={{ width: 360, flexShrink: 0 }}>
+              <Box
+                sx={{
+                  width: 360,
+                  height: 360,
+                  border: "2px dashed #aaa",
+                  borderRadius: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#f9f9f9",
+                  color: "#888",
+                  cursor: "pointer",
+                  transition: "border-color 0.2s",
+                  "&:hover": { borderColor: "#1976d2", color: "#1976d2" },
+                  overflow: "hidden",
+                }}
+              >
+                {imageUrl ? (
+                  <Box
+                    component="img"
+                    src={imageUrl}
+                    alt="Imagen de la mascota"
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "flex";
+                    }}
+                  />
+                ) : (
+                  <CloudUploadIcon sx={{ fontSize: 48, mb: 1 }} />
+                )}
+              </Box>
+
+              <TextField
+                label="URL de imagen"
+                value={imageUrl}
+                disabled
+                size="small"
+                variant="outlined"
+                fullWidth
+              />
+
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handlePasteImage}
+                fullWidth
+              >
+                Pegar link de imagen
+              </Button>
+            </Stack>
 
             {/* Columna derecha: campos */}
             <Stack spacing={2} sx={{ flex: 1 }}>
@@ -223,13 +263,36 @@ export default function RegisterPet(props) {
                     fontSize: "1rem",
                     padding: "12px",
                     borderRadius: "4px",
-                    border: "1px solid #ccc",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
                     fontFamily: "inherit",
                     boxSizing: "border-box",
                     outline: "none",
+                    backgroundColor: "transparent",
+                    color: "inherit",
+                    transition: "border-color 0.2s",
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = "#1976d2";
+                    e.target.style.borderWidth = "2px";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = "rgba(0, 0, 0, 0.23)";
+                    e.target.style.borderWidth = "1px";
                   }}
                 />
               </FormControl>
+
+              {/* Botón de Registro */}
+              <Button
+                type="submit"
+                fullWidth
+                variant="outlined"
+                color="primary"
+                size="large"
+                sx={{ mt: 2 }}
+              >
+                Registrar Mascota
+              </Button>
             </Stack>
           </Box>
         </Card>
