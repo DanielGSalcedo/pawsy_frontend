@@ -21,7 +21,6 @@ export const petApi = {
     /**
      * Método para registrar una mascota.
      * @param {Object} pet 
-     * @param {Integer} pet.id - Id de la mascota.
      * @param {Integer} pet.edad - Edad de la mascota.
      * @param {Integer} pet.clienteId - Propietario de la mascota.
      * @param {Integer} pet.tipoId - Tipo de la mascota.

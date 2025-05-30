@@ -16,7 +16,7 @@ import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { PawsyIcon } from "../sign-up/CustomIcons";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { userApi } from "../../scripts/userApi";
+import { petApi } from "../../scripts/petApi";
 
 const RegisterPetContainer = styled(Stack)(({ theme }) => ({
   height: "calc(100vh - 80px)",
@@ -104,14 +104,13 @@ export default function RegisterPet(props) {
     event.preventDefault();
     if (!validateInputs()) return;
     const pet = {
-      nombre,
       edad: Number(edad),
-      link_imagen: imageUrl,
-      tipo: Number(tipo),
+      clienteId: 0, // ????
+      tipoId: Number(tipo), // ????
+      nombre,
       descripcion,
-      duenio: 0, // ????
     };
-    userApi.register_pet(pet);
+    petApi.register_pet(pet);
   };
 
   return (
