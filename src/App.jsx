@@ -6,7 +6,6 @@ import PasswordReset from "./components/password-reset/PasswordReset.jsx";
 import UserProfile from "./components/user-profile-page/UserProfile.jsx";
 import PetEdit from "./components/pet-edit/PetEdit.jsx";
 
-
 function App() {
   return (
     <BrowserRouter>
