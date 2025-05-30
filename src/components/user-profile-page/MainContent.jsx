@@ -19,8 +19,8 @@ import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
 
 const cardData = [
   {
-    img: 'https://petys.com/wp-content/uploads/2024/10/Las_mejores_razas_de_perros_para_los_ni__os_1920x490pxok.webp',
-    tag: 'Hogar perruno',
+    img: 'https://picsum.photos/800/450?random=1',
+    tag: 'Engineering',
     title: 'Revolutionizing software development with cutting-edge tools',
     description:
       'Our latest engineering tools are designed to streamline workflows and boost productivity. Discover how these innovations are transforming the software development landscape.',
@@ -30,7 +30,7 @@ const cardData = [
     ],
   },
   {
-    img: 'https://eq2imhfmrcc.exactdn.com/wp-content/uploads/2016/08/golden-retriever-650x471.jpg?strip=all&lossy=1&ssl=1',
+    img: 'https://picsum.photos/800/450?random=2',
     tag: 'Product',
     title: 'Innovative product features that drive success',
     description:
@@ -38,7 +38,7 @@ const cardData = [
     authors: [{ name: 'Erica Johns', avatar: '/static/images/avatar/6.jpg' }],
   },
   {
-    img: 'https://eq2imhfmrcc.exactdn.com/wp-content/uploads/2016/08/poodle-caniche.jpg?strip=all&lossy=1&ssl=1',
+    img: 'https://picsum.photos/800/450?random=3',
     tag: 'Design',
     title: 'Designing for the future: trends and insights',
     description:
@@ -46,7 +46,7 @@ const cardData = [
     authors: [{ name: 'Kate Morrison', avatar: '/static/images/avatar/7.jpg' }],
   },
   {
-    img: 'https://eq2imhfmrcc.exactdn.com/wp-content/uploads/2016/08/boston-terrier.jpg?strip=all&lossy=1&ssl=1',
+    img: 'https://picsum.photos/800/450?random=4',
     tag: 'Company',
     title: "Our company's journey: milestones and achievements",
     description:
@@ -54,7 +54,7 @@ const cardData = [
     authors: [{ name: 'Cindy Baker', avatar: '/static/images/avatar/3.jpg' }],
   },
   {
-    img: 'https://eq2imhfmrcc.exactdn.com/wp-content/uploads/2016/08/boston-terrier.jpg?strip=all&lossy=1&ssl=1 ',
+    img: 'https://picsum.photos/800/450?random=45',
     tag: 'Engineering',
     title: 'Pioneering sustainable engineering solutions',
     description:
@@ -65,7 +65,7 @@ const cardData = [
     ],
   },
   {
-    img: 'https://easycolombia.vtexassets.com/arquivos/ids/168560-1600-1600?v=638066270741630000&width=1600&height=1600&aspect=true',
+    img: 'https://picsum.photos/800/450?random=6',
     tag: 'Product',
     title: 'Maximizing efficiency with our latest product updates',
     description:
@@ -190,13 +190,29 @@ export default function MainContent() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <div>
-        <Typography variant="h1" gutterBottom>
-          Pawsy
+    <Box sx={{ display: 'flex', flexDirection: 'column ', gap: 4, alignItems: 'center'}}>
+          <AvatarGroup max={3}>
+                  <Avatar
+                      key={1}
+                      alt={'USER'}
+                      src={'https://picsum.photos/800/450?random=1'}
+                      sx={{ width: 224, height: 224 }}
+                  />
+          </AvatarGroup>
+        <Typography variant="h1" gutterBottom sx={{textAlign: 'center'}}>
+          USER PROFILE
         </Typography>
-        <Typography>Porque ellos también merecen un hogar de confianza cuando tú no estás.</Typography>
-      </div>
+        <Typography>Stay in the loop with the latest about our products</Typography>
+        <Box
+            sx={{
+                display: { xs: 'flex', sm: 'none' },
+                flexDirection: 'row',
+                gap: 1,
+                width: { xs: '100%', md: 'fit-content' },
+                overflow: 'auto',
+            }}>
+    </Box>
+
       <Box
         sx={{
           display: { xs: 'flex', sm: 'none' },
@@ -234,7 +250,7 @@ export default function MainContent() {
           <Chip
             onClick={handleClick}
             size="medium"
-            label="Propiedades"
+            label="Company"
             sx={{
               backgroundColor: 'transparent',
               border: 'none',
@@ -243,7 +259,7 @@ export default function MainContent() {
           <Chip
             onClick={handleClick}
             size="medium"
-            label="Productos"
+            label="Product"
             sx={{
               backgroundColor: 'transparent',
               border: 'none',
@@ -252,7 +268,7 @@ export default function MainContent() {
           <Chip
             onClick={handleClick}
             size="medium"
-            label="Comentarios"
+            label="Design"
             sx={{
               backgroundColor: 'transparent',
               border: 'none',
@@ -261,7 +277,7 @@ export default function MainContent() {
           <Chip
             onClick={handleClick}
             size="medium"
-            label="Servicios"
+            label="Engineering"
             sx={{
               backgroundColor: 'transparent',
               border: 'none',
