@@ -100,7 +100,7 @@ export default function RegisterPet(props) {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateInputs()) return;
     const pet = {
@@ -110,7 +110,12 @@ export default function RegisterPet(props) {
       nombre,
       descripcion,
     };
-    petApi.register_pet(pet);
+    try {
+      await petApi.register_pet(pet);
+      window.location.href = "/user-pet-list";
+    } catch (error) {
+      console.error("Error registering pet:", error);
+    }
   };
 
   return (
