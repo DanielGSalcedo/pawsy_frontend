@@ -6,6 +6,9 @@ import PasswordReset from "./components/password-reset/PasswordReset.jsx";
 import UserProfile from "./components/user-profile-page/UserProfile.jsx";
 import RemovePet from "./components/remove-pet/RemovePet.jsx";
 
+// @9105
+import RegisterPet from "./components/register-pet/RegisterPet.jsx";
+
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +19,7 @@ function App() {
         <Route path="/recover-password" element={<PasswordReset />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/remove-pet" element={<RemovePet />} />
+        <Route path="/register-pet" element={<RegisterPet />} />
       </Routes>
     </BrowserRouter>
   );
