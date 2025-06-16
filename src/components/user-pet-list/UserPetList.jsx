@@ -254,7 +254,7 @@ export default function UserPetList() {
       // *******************************************
       // CONEXIÓN CON BACKEND (DESCOMENTAR CUANDO ESTÉ LISTO)
       // *******************************************
-      /*
+      
       // Opción 1: Usando fetch
       const response = await fetch(`http://localhost:4000/api/usuarios/${userId}/mascotas`);
       
@@ -277,7 +277,7 @@ export default function UserPetList() {
       
       // En desarrollo, usamos datos de ejemplo
       // En producción, deberías usar los datos del backend
-      setPets(samplePets);
+      // setPets(samplePets);
       
     } catch (err) {
       console.error('Error fetching pets:', err);
