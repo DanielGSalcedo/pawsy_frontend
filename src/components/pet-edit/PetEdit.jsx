@@ -60,13 +60,14 @@ const Field = styled('div')(({ theme }) => ({
 }));
 
 const StyledInput = styled('input')(({ theme }) => ({
-  width: '100%',
+  // width: '100%',
   padding: theme.spacing(1.5),
   borderRadius: theme.shape.borderRadius,
   border: `1px solid ${theme.palette.divider}`,
   background: theme.palette.background.default,
   color: theme.palette.text.primary,
   outline: 'none',
+  BoxSizing: 'border-box',
   fontFamily: theme.typography.fontFamily,
   fontSize: theme.typography.body1.fontSize,
   '&:focus': {
@@ -76,7 +77,7 @@ const StyledInput = styled('input')(({ theme }) => ({
 }));
 
 const StyledTextarea = styled('textarea')(({ theme }) => ({
-  width: '100%',
+  // width: '100%',
   minHeight: 120,
   padding: theme.spacing(1.5),
   fontFamily: theme.typography.fontFamily,
