@@ -268,8 +268,10 @@ export default function SignUp(props) {
 async function handleSignUp(user) {
   try {
       const response = await userApi.signUp(user);
+      console.log(response);
       console.log(response.token);
-      window.location.href = '/';
+      // alert("try?");
+      if(response.ok) window.location.href = '/';
     } catch (error) {
       console.error('Error signing up:', error);
       alert('Error signing up. Please try again.');

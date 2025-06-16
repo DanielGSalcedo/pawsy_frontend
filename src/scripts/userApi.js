@@ -3,10 +3,7 @@ const API_KEY = "PMAK-68321a03671fac000137a1dc-5a67697d08fc443ed193b1fe9d684a691
 
 export const userApi = {
   async signUp(user) {
-        if (!user || !user.email || !user.password || !user.nombre) {
-            throw new Error("User data is incomplete. Email, password y nombre son requeridos.");
-        }
-
+        console.log(user);
         // Asegurar que siempre se use "CLIENTE" como tipoUsuario
         const userData = {
             email: user.email,
@@ -26,9 +23,11 @@ export const userApi = {
                 },
                 body: JSON.stringify(userData),
             });
-
-
-            return await response;
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+            }
+            return response;
         } catch (error) {
             console.error("Error durante el registro:", error);
             throw error;
