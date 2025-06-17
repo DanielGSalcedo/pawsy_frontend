@@ -17,8 +17,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Blog />} />
-        <Route path="/sing-up" element={<SingUp />} />
-        <Route path="/sing-in" element={<SingIn />} />
+        <Route path="/sign-up" element={<SingUp />} />
+        <Route path="/sign-in" element={<SingIn />} />
         <Route path="/recover-password" element={<PasswordReset />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/remove-pet" element={<RemovePet />} />
