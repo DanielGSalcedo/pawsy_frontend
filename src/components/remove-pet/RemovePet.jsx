@@ -90,7 +90,7 @@ const DeletePetCard = ({ pet, onDelete }) => {
   // Confirmación: solo llama a onDelete si el usuario confirma
   const handleConfirmDelete = async () => {
     try {
-      const response = petApi.delete_pet(pet.id);
+      const response = await petApi.delete_pet(pet.id);
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
