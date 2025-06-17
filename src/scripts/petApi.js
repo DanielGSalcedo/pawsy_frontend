@@ -38,7 +38,7 @@ export const petApi = {
         } else {
             return fetch(`${API_URL}/mascota`, {
                 method: 'POST',
-                header: {
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
