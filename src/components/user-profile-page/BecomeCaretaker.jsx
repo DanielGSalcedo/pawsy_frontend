@@ -122,7 +122,7 @@ export default function BecomeCaretaker() {
     if (becomeCaretaker(form.telefono)) {
       alert("Cambios guardados correctamente");
       setSaving(false);
-      navigate(`/user-profile`);
+      navigate(`/sign-in`);
     }
   };
 
@@ -240,5 +240,8 @@ async function becomeCaretaker(telefono) {
     alert("Error al guardar el perfil");
     console.error("Error al guardar el perfil: ", response);
     return false;
-  } else return true;
+  } else{
+    await userApi.logout();
+    return true;
+  } 
 }
