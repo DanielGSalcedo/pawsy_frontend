@@ -54,6 +54,26 @@ export const propertyApi = {
         }
     },
 
+    async getUserProperties() {
+        try {
+            const response = await fetch(`${PROPERTY_API_URL}/lista-propiedades`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const properties = await response.json();
+            return properties;
+        } catch (error) {
+            console.error('Error fetching properties:', error);
+            throw new Error('No se pudieron obtener las propiedades');
+        }
+    },
+
     /**
      * Obtener una propiedad por su ID.
      * @param {number} id - ID de la propiedad.
