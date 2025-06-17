@@ -55,8 +55,9 @@ export const userApi = {
   },
 
   async getUserProfile(token) {
+    console.log(token);
     try {
-      const response = await fetch(`${API_URL}/auth/profile`, {
+      const response = await fetch(`${API_URL}/api/usuario/perfil`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -64,6 +65,30 @@ export const userApi = {
           // Si necesitas una API KEY, descomenta esta línea:
           // "x-api-key": API_KEY,
         },
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Error al obtener el perfil del usuario:", error);
+      throw error;
+    }
+  },
+
+  async updateUserProfile(token, name) {
+    console.log(name);
+    try {
+      const response = await fetch(`${API_URL}/api/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          // Si necesitas una API KEY, descomenta esta línea:
+          // "x-api-key": API_KEY,
+        },
+        body: name
       });
       if (!response.ok) {
         const errorData = await response.json();
