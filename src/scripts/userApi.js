@@ -77,26 +77,21 @@ export const userApi = {
     }
   },
 
-  async updateUserProfile(token, user) {
-    console.log(user);
-    const userData = {
-      "nombre": user.nombre,
-      "cuidador": user.cuidador || false
-    }
+  async updateUserProfile(token, name) {
+    console.log(name);
     try {
-      const response = await fetch(`${API_URL}/api/`, {
+      const response = await fetch(`${API_URL}/api/usuario/${name}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(userData)
+        }
       });
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = response;
         throw new Error(`Error: ${errorData.message || "Unknown error"}`);
       }
-      return response.json();
+      return response;
     } catch (error) {
       console.error("Error al obtener el perfil del usuario:", error);
       throw error;
