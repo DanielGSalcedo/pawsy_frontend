@@ -87,43 +87,43 @@ const AddPetCard = styled(StyledCard)(({ theme }) => ({
 }));
 
 // Datos de ejemplo para mascotas
-const samplePets = [
-  {
-    id: 1,
-    nombre: 'Max',
-    tipo: 'Perro',
-    edad: 3,
-    descripcion: 'Amigable y juguetón. Le encanta correr en el parque y jugar con pelotas.',
-  },
-  {
-    id: 2,
-    nombre: 'Luna',
-    tipo: 'Gato',
-    edad: 2,
-    descripcion: 'Muy curiosa y le gusta dormir al sol. Tímida al principio pero cariñosa cuando confía.',
-  },
-  {
-    id: 3,
-    nombre: 'Rocky',
-    tipo: 'Perro',
-    edad: 5,
-    descripcion: 'Tranquilo y protector. Excelente compañero para caminatas largas.',
-  },
-  {
-    id: 4,
-    nombre: 'Mia',
-    tipo: 'Gato',
-    edad: 1,
-    descripcion: 'Energética y juguetona. Siempre buscando nuevas aventuras en casa.',
-  },
-  {
-    id: 5,
-    nombre: 'Toby',
-    tipo: 'Conejo',
-    edad: 2,
-    descripcion: 'Tranquilo y amigable. Le encanta mordisquear zanahorias y jugar en el jardín.',
-  },
-];
+// const samplePets = [
+//   {
+//     id: 1,
+//     nombre: 'Max',
+//     tipo: 'Perro',
+//     edad: 3,
+//     descripcion: 'Amigable y juguetón. Le encanta correr en el parque y jugar con pelotas.',
+//   },
+//   {
+//     id: 2,
+//     nombre: 'Luna',
+//     tipo: 'Gato',
+//     edad: 2,
+//     descripcion: 'Muy curiosa y le gusta dormir al sol. Tímida al principio pero cariñosa cuando confía.',
+//   },
+//   {
+//     id: 3,
+//     nombre: 'Rocky',
+//     tipo: 'Perro',
+//     edad: 5,
+//     descripcion: 'Tranquilo y protector. Excelente compañero para caminatas largas.',
+//   },
+//   {
+//     id: 4,
+//     nombre: 'Mia',
+//     tipo: 'Gato',
+//     edad: 1,
+//     descripcion: 'Energética y juguetona. Siempre buscando nuevas aventuras en casa.',
+//   },
+//   {
+//     id: 5,
+//     nombre: 'Toby',
+//     tipo: 'Conejo',
+//     edad: 2,
+//     descripcion: 'Tranquilo y amigable. Le encanta mordisquear zanahorias y jugar en el jardín.',
+//   },
+// ];
 
 // Componente de tarjeta de mascota
 const PetCard = ({ pet, navigate }) => (
@@ -188,7 +188,7 @@ const PetCard = ({ pet, navigate }) => (
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => navigate(`/perfil/${pet.id}`)}
+        onClick={() => navigate(`/pet-profile/${pet.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
@@ -200,7 +200,7 @@ const PetCard = ({ pet, navigate }) => (
       <Button
         fullWidth
         variant="contained"
-        onClick={() => navigate(`/editar/${pet.id}`)}
+        onClick={() => navigate(`/pet-edit/${pet.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
@@ -298,7 +298,6 @@ export default function UserPetList() {
       // Obtener mascotas desde la API
       const data = await petApi.render_pets();
       setPets(data);
-
     } catch (err) {
       console.error('Error fetching pets:', err);
       setError('Error al cargar las mascotas.');
@@ -312,9 +311,9 @@ export default function UserPetList() {
     fetchPets();
   }, []);
 
-  const handleRetry = () => {
-    fetchPets();
-  };
+  // const handleRetry = () => {
+  //   fetchPets();
+  // };
 
   const handleCloseError = () => {
     setError(null);

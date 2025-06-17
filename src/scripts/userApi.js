@@ -54,6 +54,55 @@ export const userApi = {
         }
   },
 
+  async getUserProfile(token) {
+    // console.log(token);
+    try {
+      const response = await fetch(`${API_URL}/api/usuario/perfil`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          // Si necesitas una API KEY, descomenta esta línea:
+          // "x-api-key": API_KEY,
+        },
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Error al obtener el perfil del usuario:", error);
+      throw error;
+    }
+  },
+
+  async updateUserProfile(token, user) {
+    console.log(user);
+    const userData = {
+      "nombre": user.nombre,
+      "cuidador": user.cuidador || false
+    }
+    try {
+      const response = await fetch(`${API_URL}/api/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(userData)
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Error al obtener el perfil del usuario:", error);
+      throw error;
+    }
+  },
+
   async logout() {
     // Aquí podrías implementar la lógica de cierre de sesión si es necesario
     // Por ejemplo, eliminar el token del almacenamiento local
