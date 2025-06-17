@@ -291,6 +291,7 @@ export default function UserProperties() {
       const data = await propertyApi.getUserProperties();
       if (Array.isArray(data) && data.length >= 0) {
         setProperties(data);
+        console.log(properties);
       } else {
         throw new Error("Error al cargar las propiedades.");
       }

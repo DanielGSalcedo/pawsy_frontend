@@ -23,12 +23,12 @@ export const petApi = {
 
     /**
      * Método para registrar una mascota.
-     * @param {Object} pet 
-     * @param {Integer} pet.edad - Edad de la mascota.
-     * @param {Integer} pet.clienteId - Propietario de la mascota.
-     * @param {Integer} pet.tipoId - Tipo de la mascota.
-     * @param {String} pet.nombre - Nombre de la mascota.
-     * @param {String} pet.descripcion - Descripción de la mascota.
+     * @param {Object} property 
+     * @param {Integer} property.edad - Edad de la mascota.
+     * @param {Integer} property.clienteId - Propietario de la mascota.
+     * @param {Integer} property.tipoId - Tipo de la mascota.
+     * @param {String} property.nombre - Nombre de la mascota.
+     * @param {String} property.descripcion - Descripción de la mascota.
      * @returns {Promise<boolean>}
      */
     async register_pet(pet) {
@@ -110,7 +110,6 @@ export const petApi = {
                     tipo: type ? type.nombre : 'Tipo desconocido'
                 };
             });
-
             return petsWithTypes;
         } catch (error) {
             console.error('Error fetching pets:', error);

@@ -67,6 +67,7 @@ export const propertyApi = {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const properties = await response.json();
+            // console.log('User properties fetched:', properties);
             return properties;
         } catch (error) {
             console.error('Error fetching properties:', error);
@@ -128,6 +129,25 @@ export const propertyApi = {
             throw new Error('No se pudo registrar la propiedad');
         }
     },
+
+    async delete_property(id) {
+        try {
+            const response = await fetch(`${PROPERTY_API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response;
+        } catch (error) {
+            console.error('Error deleting property:', error);
+            throw new Error('No se pudo eliminar la propiedad');
+        }
+    }
 
     // /**
     //  * Obtener todos los servicios disponibles.

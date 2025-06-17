@@ -17,6 +17,7 @@ import PetEdit from "./components/pet-edit/PetEdit.jsx";
 import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
 import UserProperties from "./components/user-profile-page/UserProperties.jsx";
 import RegisterProperty from "./components/register-property/RegisterProperty.jsx";
+import RemoveProperty from "./components/remove-property/RemoveProperty.jsx";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/pet-edit/:id" element={<PetEdit />} />
         <Route path="/user-properties" element={<UserProperties />} />
         <Route path="/register-property" element={<RegisterProperty />} />
+        <Route path="/remove-property" element={<RemoveProperty />} />
       </Routes>
     </BrowserRouter>
   );
