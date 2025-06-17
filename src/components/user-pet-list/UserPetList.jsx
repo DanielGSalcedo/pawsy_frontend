@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete'; // Nuevo ícono añadido
 import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
+import { petApi } from '../../scripts/petApi';
 
 const DashboardContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
@@ -47,6 +48,11 @@ const StyledCard = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+  maxWidth: 320,
+  minWidth: 260,
+  minHeight: 380,
+  maxHeight: 420,
+  margin: 'auto',
   padding: theme.spacing(3),
   gap: theme.spacing(2),
   borderRadius: theme.spacing(2),
@@ -134,11 +140,21 @@ const PetCard = ({ pet, navigate }) => (
       >
         <PetsIcon fontSize="large" sx={{ color: 'white' }} />
       </Avatar>
-      
-      <Typography variant="h6" fontWeight="bold">
+      <Typography
+        variant="h6"
+        fontWeight="bold"
+        sx={{
+          width: '100%',
+          maxWidth: 220,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          textAlign: 'center',
+        }}
+        title={pet.nombre}
+      >
         {pet.nombre}
       </Typography>
-      
       <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
         <Typography variant="body2" color="text.secondary">
           {pet.tipo}
@@ -147,7 +163,6 @@ const PetCard = ({ pet, navigate }) => (
           {pet.edad} años
         </Typography>
       </Stack>
-      
       <Typography
         variant="body2"
         color="text.secondary"
@@ -160,18 +175,21 @@ const PetCard = ({ pet, navigate }) => (
             theme.palette.mode === 'dark'
               ? 'rgba(255, 255, 255, 0.05)'
               : 'rgba(0, 0, 0, 0.04)',
+          maxHeight: 80,
+          minHeight: 60,
+          overflowY: 'auto',
+          width: '100%',
         })}
       >
         {pet.descripcion}
       </Typography>
     </Stack>
-
     <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
       <Button
         fullWidth
         variant="outlined"
         onClick={() => navigate(`/perfil/${pet.id}`)}
-        sx={{ 
+        sx={{
           borderRadius: 2,
           textTransform: 'none',
           fontWeight: 500,
@@ -183,7 +201,7 @@ const PetCard = ({ pet, navigate }) => (
         fullWidth
         variant="contained"
         onClick={() => navigate(`/editar/${pet.id}`)}
-        sx={{ 
+        sx={{
           borderRadius: 2,
           textTransform: 'none',
           fontWeight: 600,
@@ -218,7 +236,7 @@ const EmptyState = ({ navigate }) => (
     <Button
       variant="contained"
       startIcon={<AddIcon />}
-      onClick={() => navigate('/agregar')}
+      onClick={() => navigate('/register-pet')}
       sx={{
         borderRadius: 2,
         textTransform: 'none',
@@ -236,55 +254,55 @@ const EmptyState = ({ navigate }) => (
   </Stack>
 );
 
+// Componente para estado de error (solo botón de añadir)
+const ErrorAddOnly = ({ navigate }) => {
+  useEffect(() => {
+    alert('Error al cargar las mascotas.');
+  }, []);
+  return (
+    <Stack alignItems="center" spacing={3} mt={4}>
+      <Button
+        variant="contained"
+        startIcon={<AddIcon />}
+        onClick={() => navigate('/register-pet')}
+        sx={{
+          borderRadius: 2,
+          textTransform: 'none',
+          fontWeight: 600,
+          px: 4,
+          py: 1.5,
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: theme => `0 4px 12px ${theme.palette.primary.main}40`,
+          },
+        }}
+      >
+        Añadir nueva mascota
+      </Button>
+    </Stack>
+  );
+};
+
 export default function UserPetList() {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Función para obtener mascotas desde el backend
+  // Ahora usamos petApi.render_pets()
   const fetchPets = async () => {
     try {
       setLoading(true);
       setError(null);
-      
-      // Obtener ID de usuario (ejemplo: desde localStorage)
-      const userId = localStorage.getItem('userId') || 1;
-      
-      // *******************************************
-      // CONEXIÓN CON BACKEND (DESCOMENTAR CUANDO ESTÉ LISTO)
-      // *******************************************
-      /*
-      // Opción 1: Usando fetch
-      const response = await fetch(`http://localhost:4000/api/usuarios/${userId}/mascotas`);
-      
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+
+      // Obtener mascotas desde la API
+      const data = await petApi.render_pets();
       setPets(data);
-      
-      // Opción 2: Usando axios (instalar primero: npm install axios)
-      /*
-      import axios from 'axios';
-      const response = await axios.get(`http://localhost:4000/api/usuarios/${userId}/mascotas`);
-      setPets(response.data);
-      */
-      
-      // Simular tiempo de respuesta del backend
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      // En desarrollo, usamos datos de ejemplo
-      // En producción, deberías usar los datos del backend
-      setPets(samplePets);
-      
+
     } catch (err) {
       console.error('Error fetching pets:', err);
-      setError('Error al cargar las mascotas. Mostrando datos de ejemplo.');
-      
-      // En caso de error, mostrar datos de ejemplo
-      setPets(samplePets.slice(0, 3));
+      setError('Error al cargar las mascotas.');
+      setPets([]); // No mostrar ejemplos
     } finally {
       setLoading(false);
     }
@@ -306,60 +324,40 @@ export default function UserPetList() {
     <AppTheme>
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <DashboardContainer direction="column" alignItems="center">
-        <Box sx={{ 
-          width: '100%', 
+        <Box sx={{
+          width: '100%',
           maxWidth: '1200px',
           mb: 4,
           textAlign: 'center'
         }}>
-          <Typography 
-            variant="h4" 
-            fontWeight="bold" 
+          <Typography
+            variant="h4"
+            fontWeight="bold"
             gutterBottom
             sx={{ mt: 2, mb: 3 }}
           >
             Mis Mascotas
           </Typography>
-          
           <Divider sx={{ mb: 4 }} />
-
           {loading ? (
             <LoadingState />
           ) : error ? (
-            <>
-              <Stack alignItems="center" mt={3} spacing={2}>
-                <Alert severity="error" sx={{ width: '100%', maxWidth: 500 }}>
-                  {error}
-                </Alert>
-                <Button
-                  variant="outlined"
-                  onClick={handleRetry}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Reintentar conexión
-                </Button>
-              </Stack>
-              
-              <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
-                {pets.map(pet => (
-                  <Grid item xs={12} sm={6} md={4} key={pet.id}>
-                    <PetCard pet={pet} navigate={navigate} />
-                  </Grid>
-                ))}
-              </Grid>
-            </>
+            <ErrorAddOnly navigate={navigate} />
           ) : pets.length === 0 ? (
             <EmptyState navigate={navigate} />
           ) : (
-            <Grid container spacing={3} justifyContent="center">
+            <Grid
+              container
+              spacing={4}
+              justifyContent="center"
+            >
               {pets.map(pet => (
-                <Grid item xs={12} sm={6} md={4} key={pet.id}>
+                <Grid item xs={12} sm={6} md={4} key={pet.id} sx={{ display: 'flex', justifyContent: 'center' }}>
                   <PetCard pet={pet} navigate={navigate} />
                 </Grid>
               ))}
-              
-              <Grid item xs={12} sm={6} md={4}>
-                <AddPetCard onClick={() => navigate('/agregar')}>
+              <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <AddPetCard onClick={() => navigate('/register-pet')}>
                   <AddIcon fontSize="large" color="action" sx={{ mb: 1, fontSize: 48 }} />
                   <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 500 }}>
                     Añadir nueva mascota
@@ -370,9 +368,8 @@ export default function UserPetList() {
           )}
         </Box>
       </DashboardContainer>
-      
       {/* Botón flotante para eliminar mascotas (FAB) */}
-      {!loading && pets.length > 0 && (
+      {!loading && pets.length > 0 && !error && (
         <Fab
           color="error"
           aria-label="eliminar"
