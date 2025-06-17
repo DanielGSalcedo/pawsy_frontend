@@ -1,6 +1,7 @@
 //REGISTER PET
 
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -71,10 +72,31 @@ export default function RegisterPet(props) {
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
   const [edad, setEdad] = React.useState("");
-  const [tipo, setTipo] = React.useState(0);
+  const [tipo, setTipo] = React.useState(1);
   const [descripcion, setDescripcion] = React.useState("");
   const [nombre, setNombre] = React.useState("");
   const [imageUrl, setImageUrl] = React.useState("");
+
+  // Nuevas
+  const [petTypes, setPetTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPetTypes = async () => {
+      try {
+        setLoading(true);
+        const types = await petApi.render_types();
+        setPetTypes(types);
+      } catch (error) {
+        console.error("Error loading pet types:", error);
+        // You might want to show an error message to the user
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPetTypes();
+  }, []);
 
   const validateInputs = () => {
     let isValid = true;
@@ -107,14 +129,18 @@ export default function RegisterPet(props) {
     if (!validateInputs()) return;
     const pet = {
       edad: Number(edad),
-      clienteId: 0, // ????
-      tipoId: Number(tipo), // ????
+      tipoId: Number(tipo),
       nombre,
       descripcion,
     };
     try {
       await petApi.register_pet(pet);
-      window.location.href = "/user-pet-list";
+
+      console.log("Mascota registrada:", pet);
+      console.log("token:" + localStorage.getItem("token"));
+
+      alert("Mascota registrada exitosamente");
+      window.location.href = "/user-profile";
     } catch (error) {
       console.error("Error registering pet:", error);
     }
@@ -245,8 +271,17 @@ export default function RegisterPet(props) {
                     value={tipo}
                     label="Tipo"
                     onChange={(e) => setTipo(e.target.value)}
+                    disabled={loading}
                   >
-                    <MenuItem value={0}>Perro</MenuItem>
+                    {loading ? (
+                      <MenuItem value="">Cargando...</MenuItem>
+                    ) : (
+                      petTypes.map((petType) => (
+                        <MenuItem key={petType.id} value={petType.id}>
+                          {petType.nombre}
+                        </MenuItem>
+                      ))
+                    )}
                   </Select>
                 </FormControl>
               </Stack>
