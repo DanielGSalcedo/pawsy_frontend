@@ -35,6 +35,34 @@ export const userApi = {
         }
     },
 
+  async signIn(email, password) {
+    const userData = {
+      email: email,
+      password: password,
+    };
+    console.log(userData);
+
+    try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Si necesitas una API KEY, descomenta esta línea:
+                    // "x-api-key": API_KEY,
+                },
+                body: JSON.stringify(userData),
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+            }
+            return response;
+        } catch (error) {
+            console.error("Error durante el login:", error);
+            throw error;
+        }
+  },
+
   async resetPassword(token, newPassword) {
     if (token == null || newPassword == null) {
       throw new Error("Token and new password are required");
