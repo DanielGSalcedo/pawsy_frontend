@@ -52,31 +52,31 @@ export const propertyApi = {
         }
     },
 
-    // /**
-    //  * Obtener una propiedad por su ID.
-    //  * @param {number} id - ID de la propiedad.
-    //  * @returns {Promise<Object>} Objeto propiedad.
-    //  */
-    // async get_property_by_id(id) {
-    //     try {
-    //         const response = await fetch(`${PROPERTY_API_URL}/${id}`, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //             }
-    //         });
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         const property = await response.json();
-    //         return property;
-    //     } catch (error) {
-    //         console.error('Error fetching property by id:', error);
-    //         throw new Error('No se pudo obtener la propiedad');
-    //     }
-    // },
-
+    /**
+     * Obtener una propiedad por su ID.
+     * @param {number} id - ID de la propiedad.
+     * @returns {Promise<Object>} Objeto propiedad.
+     */
+    async get_property_by_id(id) {
+        try {
+            const response = await fetch(`https://api101.proyectos.fireploy.online/api/propiedades/propiedades/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const property = await response.json();
+            return property;
+        } catch (error) {
+            console.error('Error fetching property by id:', error);
+            throw new Error('No se pudo obtener la propiedad');
+        }
+    }
+    //,
     // /**
     //  * Registrar una nueva propiedad.
     //  * @param {Object} property - Objeto propiedad.
