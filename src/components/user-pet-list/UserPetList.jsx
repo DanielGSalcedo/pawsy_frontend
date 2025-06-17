@@ -307,11 +307,11 @@ export default function UserPetList() {
       */
       
       // Simular tiempo de respuesta del backend
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // await new Promise(resolve => setTimeout(resolve, 800));
       
       // En desarrollo, usamos datos de ejemplo
       // En producción, deberías usar los datos del backend
-      setPets(samplePets);
+      // setPets(samplePets);
       
     } catch (err) {
       console.error('Error fetching pets:', err);
