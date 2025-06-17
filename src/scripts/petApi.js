@@ -125,7 +125,7 @@ export const petApi = {
     */
     async get_pet_by_id(id) {
         try {
-            const response = await fetch(`https://api101.proyectos.fireploy.online/api/mascota/${id}`, {
+            const response = await fetch(`${API_URL}/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -140,6 +140,46 @@ export const petApi = {
         } catch (error) {
             console.error('Error fetching pet by id:', error);
             throw new Error('No se pudo obtener la mascota');
+        }
+    },
+
+    async update_pet(id, pet) {
+        console.log('Updating pet with ID:', id, 'and data:', pet);
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(pet)
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error updating pet:', error);
+            throw new Error('No se pudo actualizar la mascota');
+        }
+    },
+
+    async delete_pet(id) {
+        try{
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error deleting pet:', error);
+            throw new Error('No se pudo eliminar la mascota');
         }
     }
 }
