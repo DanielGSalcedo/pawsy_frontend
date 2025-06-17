@@ -19,6 +19,7 @@ import UserProperties from "./components/user-profile-page/UserProperties.jsx";
 import SeeProperty from "./components/see-property/SeeProperty.jsx";
 
 import SeeActiveRents from "./components/active-rents/ActiveRents.jsx";
+import SeeActiveGuest from "./components/active-guests/ActiveGuests.jsx";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
         <Route path="/user-properties" element={<UserProperties />} />
         <Route path="/property/:id" element={<SeeProperty />} />
         <Route path="/view-active-rents" element={<SeeActiveRents />} />
-        {/* Add more routes as needed */}
+        <Route path="/view-active-guests" element={<SeeActiveGuest />} />
       </Routes>
     </BrowserRouter>
   );

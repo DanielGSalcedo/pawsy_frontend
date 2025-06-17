@@ -220,6 +220,28 @@ export default function UserProfile() {
                 >
                   Ver reservas
                 </Button>
+                {user?.tipoUsuario === "CUIDADOR" && (
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: 1,
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      letterSpacing: 0.5,
+                      borderRadius: 2,
+                      backgroundColor: theme => theme.palette.info.main,
+                      color: theme => theme.palette.info.contrastText,
+                      '&:hover': {
+                        backgroundColor: theme => theme.palette.info.dark,
+                        boxShadow: theme => `0 4px 20px ${theme.palette.info.main}55`,
+                      },
+                    }}
+                    onClick={() => navigate('/view-active-guests')}
+                  >
+                    Ver Inquilinos
+                  </Button>
+                )}
               </Box>
             </Box>
           </Card>
