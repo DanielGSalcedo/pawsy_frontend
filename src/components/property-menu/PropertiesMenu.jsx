@@ -170,9 +170,9 @@ const PropertyCard = ({ property, navigate }) => (
           whiteSpace: 'nowrap',
           textAlign: 'center',
         }}
-        title={property.usuario?.nombre}
+        title={property.usuario.nombre}
       >
-        Propietario: {property.usuario?.nombre}
+        Propietario: {property.usuario.nombre}
       </Typography>
       <Typography
         variant="body2"
@@ -185,9 +185,9 @@ const PropertyCard = ({ property, navigate }) => (
           whiteSpace: 'nowrap',
           textAlign: 'center',
         }}
-        title={property.usuario?.email}
+        title={property.usuario.email}
       >
-        Email: {property.usuario?.email}
+        Email: {property.usuario.email}
       </Typography>
       <Typography
         variant="body2"
