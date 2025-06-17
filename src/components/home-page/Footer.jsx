@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/X';
-import SitemarkIcon from './SitemarkIcon.jsx';
+import {PawsyIcon} from '../sign-up/CustomIcons.jsx';
+
 
 function Copyright() {
   return (
@@ -58,8 +59,20 @@ export default function Footer() {
             }}
           >
             <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
-              <SitemarkIcon />
-              <Typography
+                <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <PawsyIcon />
+                        <Typography
+                            variant="h5"
+                            gutterBottom
+                            sx={{ fontWeight: 600, mt: 0 }}
+                        >
+                            Pawsy
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <Typography
                 variant="body2"
                 gutterBottom
                 sx={{ fontWeight: 600, mt: 2 }}
