@@ -109,8 +109,6 @@ export const propertyApi = {
         }
     },
 
-
-
     // /**
     //  * Obtener todos los servicios disponibles.
     //  * @returns {Promise<Array>} Array de servicios.
