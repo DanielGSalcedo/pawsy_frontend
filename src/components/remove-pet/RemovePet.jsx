@@ -90,13 +90,7 @@ const DeletePetCard = ({ pet, onDelete }) => {
   // Confirmación: solo llama a onDelete si el usuario confirma
   const handleConfirmDelete = async () => {
     try {
-      const response = await fetch(`https://api101.proyectos.fireploy.online/api/mascota/${pet.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = petApi.delete_pet(pet.id);
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
@@ -104,6 +98,7 @@ const DeletePetCard = ({ pet, onDelete }) => {
       window.location.reload(); // Refresca la página tras eliminar
     } catch (err) {
       alert('Error al eliminar la mascota');
+      console.error('Error al eliminar la mascota:', err);
     } finally {
       handleCloseDialog();
     }

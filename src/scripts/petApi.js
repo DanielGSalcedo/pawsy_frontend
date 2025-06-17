@@ -176,7 +176,7 @@ export const petApi = {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return await response.json();
+            return response;
         } catch (error) {
             console.error('Error deleting pet:', error);
             throw new Error('No se pudo eliminar la mascota');
