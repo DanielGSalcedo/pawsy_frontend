@@ -236,5 +236,5 @@ async function saveUserProfile(name) {
 async function fetchUserProfile() {
   const response = await userApi.getUserProfile(localStorage.getItem('token'));
   console.log(response);
-  return await response.json();
+  return response;
 }

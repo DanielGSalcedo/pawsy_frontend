@@ -55,7 +55,7 @@ export const userApi = {
   },
 
   async getUserProfile(token) {
-    console.log(token);
+    // console.log(token);
     try {
       const response = await fetch(`${API_URL}/api/usuario/perfil`, {
         method: "GET",
@@ -85,8 +85,6 @@ export const userApi = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          // Si necesitas una API KEY, descomenta esta línea:
-          // "x-api-key": API_KEY,
         },
         body: name
       });
