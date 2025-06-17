@@ -54,7 +54,7 @@ export function SitemarkIcon() {
 
 export function PawsyIcon() {
   return(
-    <img src="src\assets\perro.png" alt="pawsy logo" width={43} height={32}></img>
+    <img src="src/assets/perro.png" alt="pawsy logo" width={43} height={32}></img>
   );
 }
 
