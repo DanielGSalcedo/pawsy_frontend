@@ -20,6 +20,8 @@ import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { PawsyIcon } from "../sign-up/CustomIcons";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { petApi } from "../../scripts/petApi";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPetContainer = styled(Stack)(({ theme }) => ({
   height: "calc(100vh - 80px)",
@@ -76,6 +78,7 @@ export default function RegisterPet(props) {
   const [descripcion, setDescripcion] = React.useState("");
   const [nombre, setNombre] = React.useState("");
   const [imageUrl, setImageUrl] = React.useState("");
+  const navigate = useNavigate();
 
   // Nuevas
   const [petTypes, setPetTypes] = useState([]);
@@ -153,6 +156,13 @@ export default function RegisterPet(props) {
         <ColorModeSelect
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
         />
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate("/user-profile")}
+          sx={{ alignSelf: "flex-start", mb: 1, textTransform: "none" }}
+        >
+          Volver       
+        </Button>
         <Card variant="outlined">
           <PawsyIcon />
           <Typography
