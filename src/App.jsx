@@ -16,6 +16,7 @@ import PetEdit from "./components/pet-edit/PetEdit.jsx";
 //Properties
 import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
 import UserProperties from "./components/user-profile-page/UserProperties.jsx";
+import RegisterProperty from "./components/register-property/RegisterProperty.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/pet-list" element={<UserPetList />} />
         <Route path="/pet-edit/:id" element={<PetEdit />} />
         <Route path="/user-properties" element={<UserProperties />} />
+        <Route path="/register-property" element={<RegisterProperty />} />
       </Routes>
     </BrowserRouter>
   );
