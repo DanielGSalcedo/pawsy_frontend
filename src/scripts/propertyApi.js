@@ -1,6 +1,6 @@
 // PROPERTY API
 
-const PROPERTY_API_URL = 'https://api101.proyectos.fireploy.online/api/propiedades/propiedad';
+const PROPERTY_API_URL = 'https://pawsy-backend.onrender.com/api/propiedades';
 
 /**
  * API module for property-related operations.
@@ -36,7 +36,7 @@ export const propertyApi = {
      */
     async render_properties() {
         try {
-            const response = await fetch('https://api101.proyectos.fireploy.online/api/propiedades/propiedades', {
+            const response = await fetch(`${PROPERTY_API_URL}/propiedades`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export const propertyApi = {
         }
     },
 
-    
+
 
     // /**
     //  * Obtener todos los servicios disponibles.

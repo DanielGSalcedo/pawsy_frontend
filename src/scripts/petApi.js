@@ -16,7 +16,7 @@
  *   "tipoId": number
  * }
  */
-const API_URL = 'https://pawsy-backend.onrender.com/api/mascota';
+const API_URL = 'https://pawsy-backend.onrender.com/api';
 
 
 export const petApi = {
@@ -36,7 +36,7 @@ export const petApi = {
             alert('No ha llenado los datos de la mascota!');
             throw new Error('No ha llenado los datos de la mascota!');
         } else {
-            return fetch(`${API_URL}`, {
+            return fetch(`${API_URL}/mascota`, {
                 method: 'POST',
                 header: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export const petApi = {
      */
     async render_types() {
         try {
-            const response = await fetch(`${API_URL}`, {
+            const response = await fetch(`${API_URL}/tipos-mascota`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export const petApi = {
     async render_pets() {
         try {
             // Obtener mascotas
-            const response = await fetch(API_URL, {
+            const response = await fetch(`${API_URL}/mascota/lista-mascotas`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export const petApi = {
     */
     async get_pet_by_id(id) {
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/mascota/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export const petApi = {
     async update_pet(id, pet) {
         console.log('Updating pet with ID:', id, 'and data:', pet);
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/mascota/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ export const petApi = {
 
     async delete_pet(id) {
         try{
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/mascota/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

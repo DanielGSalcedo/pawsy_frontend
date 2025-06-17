@@ -70,7 +70,7 @@ export const userApi = {
         const errorData = await response.json();
         throw new Error(`Error: ${errorData.message || "Unknown error"}`);
       }
-      return response.json();
+      return await response.json();
     } catch (error) {
       console.error("Error al obtener el perfil del usuario:", error);
       throw error;
@@ -100,6 +100,27 @@ export const userApi = {
     } catch (error) {
       console.error("Error al obtener el perfil del usuario:", error);
       throw error;
+    }
+  },
+
+  async becomeCaretaker(token, telefono) {
+    console.log(telefono);
+    try {
+      const response = await fetch(`${API_URL}/api/usuario/to-cuidador/${telefono}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if (!response.ok) {
+        const errorData = response;
+        throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+      }
+      return response;
+    } catch (error) {
+      console.error("Error al convertirse en cuidador:", error);
+      // throw error;
     }
   },
 
