@@ -11,83 +11,98 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 
 const articleInfo = [
   {
-    tag: 'Engineering',
-    title: 'The future of AI in software engineering',
+    // tag: 'Tipo de propiedad',
+    tag: 'Casa',
+    // title: 'Título de la propiedad',
+    title: 'Hogar con patio grande para mascotas',
+    // description: 'Descripción breve de la propiedad',
     description:
-      'Artificial intelligence is revolutionizing software engineering. Explore how AI-driven tools are enhancing development processes and improving software quality.',
+        'Una casa amplia con jardín cercado, perfecta para perros grandes o muy activos. Ofrece espacios seguros y cómodos para jugar.',
+    // authors: [{ name: 'Nombre del dueño', avatar: 'ruta_avatar' }]
     authors: [
-      { name: 'Remy Sharp', avatar: '/static/images/avatar/1.jpg' },
-      { name: 'Travis Howard', avatar: '/static/images/avatar/2.jpg' },
+      { name: 'Juan Rodríguez', avatar: '/static/images/avatar/1.jpg' },
     ],
   },
   {
-    tag: 'Product',
-    title: 'Driving growth with user-centric product design',
+    tag: 'Apartamento',
+    title: 'Apartamento pet-friendly en el centro',
     description:
-      'Our user-centric product design approach is driving significant growth. Learn about the strategies we employ to create products that resonate with users.',
-    authors: [{ name: 'Erica Johns', avatar: '/static/images/avatar/6.jpg' }],
-  },
-  {
-    tag: 'Design',
-    title: 'Embracing minimalism in modern design',
-    description:
-      'Minimalism is a key trend in modern design. Discover how our design team incorporates minimalist principles to create clean and impactful user experiences.',
-    authors: [{ name: 'Kate Morrison', avatar: '/static/images/avatar/7.jpg' }],
-  },
-  {
-    tag: 'Company',
-    title: 'Cultivating a culture of innovation',
-    description:
-      'Innovation is at the heart of our company culture. Learn about the initiatives we have in place to foster creativity and drive groundbreaking solutions.',
-    authors: [{ name: 'Cindy Baker', avatar: '/static/images/avatar/3.jpg' }],
-  },
-  {
-    tag: 'Engineering',
-    title: 'Advancing cybersecurity with next-gen solutions',
-    description:
-      'Our next-generation cybersecurity solutions are setting new standards in the industry. Discover how we protect our clients from evolving cyber threats.',
+        'Moderno apartamento en el corazón de la ciudad, ideal para mascotas pequeñas. Cercano a parques y áreas verdes.',
     authors: [
-      { name: 'Agnes Walker', avatar: '/static/images/avatar/4.jpg' },
-      { name: 'Trevor Henderson', avatar: '/static/images/avatar/5.jpg' },
+      { name: 'Laura Gómez', avatar: '/static/images/avatar/2.jpg' },
     ],
   },
   {
-    tag: 'Product',
-    title: 'Enhancing customer experience through innovation',
+    tag: 'Finca',
+    title: 'Finca con espacios naturales para tu mascota',
     description:
-      'Our innovative approaches are enhancing customer experience. Learn about the new features and improvements that are delighting our users.',
-    authors: [{ name: 'Travis Howard', avatar: '/static/images/avatar/2.jpg' }],
-  },
-  {
-    tag: 'Engineering',
-    title: 'Pioneering sustainable engineering solutions',
-    description:
-      "Learn about our commitment to sustainability and the innovative engineering solutions we're implementing to create a greener future. Discover the impact of our eco-friendly initiatives.",
+        'Lugar campestre con senderos y zonas verdes donde las mascotas pueden correr libremente y disfrutar de la naturaleza.',
     authors: [
-      { name: 'Agnes Walker', avatar: '/static/images/avatar/4.jpg' },
-      { name: 'Trevor Henderson', avatar: '/static/images/avatar/5.jpg' },
+      { name: 'Carlos Pérez', avatar: '/static/images/avatar/3.jpg' },
     ],
   },
   {
-    tag: 'Product',
-    title: 'Maximizing efficiency with our latest product updates',
+    tag: 'Habitación',
+    title: 'Habitación privada para tu peludo',
     description:
-      'Our recent product updates are designed to help you maximize efficiency and achieve more. Get a detailed overview of the new features and improvements that can elevate your workflow.',
-    authors: [{ name: 'Travis Howard', avatar: '/static/images/avatar/2.jpg' }],
+        'Ofrecemos una habitación tranquila, limpia y equipada con cama especial para mascotas pequeñas y medianas.',
+    authors: [
+      { name: 'Andrea Ruiz', avatar: '/static/images/avatar/4.jpg' },
+    ],
   },
   {
-    tag: 'Design',
-    title: 'Designing for the future: trends and insights',
+    tag: 'Casa',
+    title: 'Casa con terraza techada y zona de juegos',
     description:
-      'Stay ahead of the curve with the latest design trends and insights. Our design team shares their expertise on creating intuitive and visually stunning user experiences.',
-    authors: [{ name: 'Kate Morrison', avatar: '/static/images/avatar/7.jpg' }],
+        'Espacio diseñado especialmente para estancias largas. Cuenta con terraza segura y juguetes disponibles para mascotas.',
+    authors: [
+      { name: 'Miguel Torres', avatar: '/static/images/avatar/5.jpg' },
+    ],
   },
   {
-    tag: 'Company',
-    title: "Our company's journey: milestones and achievements",
+    tag: 'Habitación',
+    title: 'Habitación acogedora con supervisión 24/7',
     description:
-      "Take a look at our company's journey and the milestones we've achieved along the way. From humble beginnings to industry leader, discover our story of growth and success.",
-    authors: [{ name: 'Cindy Baker', avatar: '/static/images/avatar/3.jpg' }],
+        'Ofrecemos cuidado constante y cariño para tu mascota. Ideal para estancias nocturnas o fines de semana.',
+    authors: [
+      { name: 'Sofía Martínez', avatar: '/static/images/avatar/6.jpg' },
+    ],
+  },
+  {
+    tag: 'Apartamento',
+    title: 'Apartamento con balcón seguro',
+    description:
+        'Perfecto para mascotas curiosas que aman observar desde las alturas. El balcón está enmallado para mayor seguridad.',
+    authors: [
+      { name: 'Diego Herrera', avatar: '/static/images/avatar/7.jpg' },
+    ],
+  },
+  {
+    tag: 'Casa',
+    title: 'Casa familiar que ama los animales',
+    description:
+        'Vivimos con 2 perros y sabemos lo importante que es que tu mascota se sienta en familia. ¡Aquí será uno más del hogar!',
+    authors: [
+      { name: 'Valentina López', avatar: '/static/images/avatar/8.jpg' },
+    ],
+  },
+  {
+    tag: 'Finca',
+    title: 'Finca en las afueras con alojamiento especial',
+    description:
+        'Alojamiento adaptado para mascotas grandes, con corral externo, cama elevada y agua fresca disponible siempre.',
+    authors: [
+      { name: 'Luis Ramírez', avatar: '/static/images/avatar/9.jpg' },
+    ],
+  },
+  {
+    tag: 'Habitación',
+    title: 'Mini suite con aire acondicionado',
+    description:
+        'Espacio climatizado con alfombra antideslizante y juguetes. Ideal para mascotas consentidas.',
+    authors: [
+      { name: 'Mariana Vélez', avatar: '/static/images/avatar/10.jpg' },
+    ],
   },
 ];
 
@@ -192,7 +207,7 @@ export default function Latest() {
   return (
     <div>
       <Typography variant="h2" gutterBottom>
-        Latest
+        Comentarios
       </Typography>
       <Grid container spacing={8} columns={12} sx={{ my: 4 }}>
         {articleInfo.map((article, index) => (

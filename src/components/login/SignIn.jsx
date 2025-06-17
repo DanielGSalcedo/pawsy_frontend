@@ -83,13 +83,9 @@ export default function SignIn(props) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    const user = {
-      email: data.get('email'),
-      password: data.get('password'),
-    };
-    console.log(user);
     event.preventDefault();
-    handleSignIn(user);
+    handleSignIn(data.get('email'), data.get('password'));
+
   };
 
   const validateInputs = () => {
@@ -207,14 +203,17 @@ export default function SignIn(props) {
   );
 }
 
-async function handleSignIn(user) {
-  try {
-      const response = await userApi.signIn(user);
-      console.log(response.token);
-      // window.location.href = '/';
-    } catch (error) {
-      console.error('Error signing in:', error);
-      alert('Error signing in. Please try again.');
-      return;
-    }
+async function handleSignIn(email, password) {
+  const response = await userApi.signIn(email, password);
+  console.log(response);
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    localStorage.setItem('token', data.token);
+    window.location.href = '/user-profile';
+  } else {
+    console.error('Sign in failed:', response.statusText);
+    alert('Sign in failed. Please check your credentials and try again.');
+  }
+
 }

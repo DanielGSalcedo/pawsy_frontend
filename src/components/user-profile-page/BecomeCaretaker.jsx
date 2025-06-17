@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
   Typography,
   CircularProgress,
-  Avatar,
   Divider,
   Stack,
   Card as MuiCard,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import PetsIcon from "@mui/icons-material/Pets";
 import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
-import { petApi } from "../../scripts/petApi";
+import { userApi } from "../../scripts/userApi";
 // import axios from 'axios'; // Activar luego para conexión real
 
 const ProfileContainer = styled(Stack)(({ theme }) => ({
@@ -95,76 +93,37 @@ const StyledTextarea = styled("textarea")(({ theme }) => ({
   },
 }));
 
-export default function PetEdit() {
-  const { id } = useParams();
+export default function BecomeCaretaker() {
   const [form, setForm] = useState(null);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Simulación de carga de datos
-    // const timer = setTimeout(() => {
-    //   setForm({
-    //     nombre: 'Max',
-    //     tipo: 'Perro',
-    //     edad: '3',
-    //     descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
-    //   });
-    // }, 500);
-
-    // return () => clearTimeout(timer);
-
-    // Código real backend:
-    // axios.get(`http://localhost:4000/api/pets/${id}`)
-    //   .then(res => setForm(res.data))
-    //   .catch(err => console.error(err));
-
-    const fetchPet = async () => {
-      petApi.get_pet_by_id(id).then((data) => setForm(data));
-    };
-    try {
-      fetchPet();
-    } catch (error) {
-      console.error("Error al cargar la mascota:", error);
-      alert("No se pudo cargar la mascota. Inténtalo más tarde.");
-      navigate("/pet-list");
-    }
-  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
+  useEffect(() => {
+    setForm({
+      telefono: ""
+    });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSaving(true);
+    // setSaving(true);
     // setTimeout(() => {
-    //   console.log("Mascota actualizada:", form);
-    //   alert("Cambios guardados (simulado)");
+    //   console.log('Mascota actualizada:', form);
+    //   alert('Cambios guardados (simulado)');
     //   setSaving(false);
     //   navigate(`/perfil/${id}`);
     // }, 1000);
 
-    // Código real backend:
-    // axios.put(`http://localhost:4000/api/pets/${id}`, form)
-    //   .then(() => navigate(`/perfil/${id}`))
-    //   .catch(err => {
-    //     alert("Error al guardar");
-    //     setSaving(false);
-    //   });
-    const updatePet = async () => {
-      petApi.update_pet(id, form).then(() => {
-        alert("Cambios guardados correctamente");
-        setSaving(false);
-        navigate(`/pet-profile/${id}`);
-      });
-    }
-    updatePet().catch((error) => {
-      console.error("Error al actualizar la mascota:", error);
-      alert("No se pudo guardar la mascota. Inténtalo más tarde.");
+    if (becomeCaretaker(form.telefono)) {
+      alert("Cambios guardados correctamente");
       setSaving(false);
-    });
+      navigate(`/user-profile`);
+    }
   };
 
   if (!form) {
@@ -183,20 +142,8 @@ export default function PetEdit() {
       <ProfileContainer alignItems="center" justifyContent="center">
         <Card>
           <Stack alignItems="center" spacing={1}>
-            <Avatar
-              sx={{
-                bgcolor: "primary.main",
-                width: 72,
-                height: 72,
-                boxShadow: 3,
-                background: (theme) =>
-                  `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              }}
-            >
-              <PetsIcon fontSize="large" sx={{ color: "white" }} />
-            </Avatar>
             <Typography variant="h5" fontWeight="bold">
-              Editar Mascota
+              Convertirse a cuidador
             </Typography>
           </Stack>
 
@@ -205,53 +152,58 @@ export default function PetEdit() {
           <Box component="form" onSubmit={handleSubmit}>
             <Field>
               <Typography variant="body2" color="text.secondary" mb={0.5}>
-                Nombre *
-              </Typography>
-              <StyledInput
-                type="text"
-                name="nombre"
-                value={form.nombre}
-                onChange={handleChange}
-                required
-              />
-            </Field>
-
-            <Field>
-              <Typography variant="body2" color="text.secondary" mb={0.5}>
-                Tipo *
-              </Typography>
-              <StyledInput
-                type="text"
-                name="tipo"
-                value={form.tipo}
-                onChange={handleChange}
-                required
-              />
-            </Field>
-
-            <Field>
-              <Typography variant="body2" color="text.secondary" mb={0.5}>
-                Edad
+                Teléfono *
               </Typography>
               <StyledInput
                 type="number"
-                name="edad"
-                value={form.edad}
+                name="telefono"
+                value={form.telefono}
+                onChange={handleChange}
+                required
+              />
+            </Field>
+            {/* <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Ser cuidador *
+              </Typography>
+              <StyledInput
+                type="checkbox"
+                name="cuidador"
+                value={form.cuidador}
+                onChange={handleChange}
+                required
+              />
+            </Field> */}
+            {/* <FormControlLabel
+              control={<Checkbox value="cuidador" color="primary" />}
+              label="Ser cuidador *"
+            /> */}
+
+            {/* <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Email *
+              </Typography>
+              <StyledInput
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </Field> */}
+
+            {/* <Field>
+              <Typography variant="body2" color="text.secondary" mb={0.5}>
+                Dirección
+              </Typography>
+              <StyledInput
+                type="text"
+                name="direccion"
+                value={form.direccion}
                 onChange={handleChange}
                 min={0}
               />
-            </Field>
-
-            <Field>
-              <Typography variant="body2" color="text.secondary" mb={0.5}>
-                Descripción
-              </Typography>
-              <StyledTextarea
-                name="descripcion"
-                value={form.descripcion}
-                onChange={handleChange}
-              />
-            </Field>
+            </Field> */}
 
             <Stack direction="row" spacing={2} mt={2}>
               <Button
@@ -276,4 +228,17 @@ export default function PetEdit() {
       </ProfileContainer>
     </AppTheme>
   );
+}
+
+async function becomeCaretaker(telefono) {
+  const response = await userApi.becomeCaretaker(
+    localStorage.getItem("token"),
+    telefono
+  );
+  console.log(response);
+  if (!response.ok) {
+    alert("Error al guardar el perfil");
+    console.error("Error al guardar el perfil: ", response);
+    return false;
+  } else return true;
 }
