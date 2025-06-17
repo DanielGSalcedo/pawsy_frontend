@@ -1,3 +1,4 @@
+
 //PET API
 
 /**
@@ -114,6 +115,31 @@ export const petApi = {
         } catch (error) {
             console.error('Error fetching pets:', error);
             throw new Error('No se pudieron obtener las mascotas');
+        }
+    },
+
+    /**
+    * Método para obtener los datos de una mascota por su ID.
+    * @param {number} id - ID de la mascota a consultar.
+    * @returns {Promise<Object>} Objeto con los datos de la mascota.
+    */
+    async get_pet_by_id(id) {
+        try {
+            const response = await fetch(`https://api101.proyectos.fireploy.online/api/mascota/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const pet = await response.json();
+            return pet;
+        } catch (error) {
+            console.error('Error fetching pet by id:', error);
+            throw new Error('No se pudo obtener la mascota');
         }
     }
 }
