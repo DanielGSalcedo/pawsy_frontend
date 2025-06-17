@@ -11,6 +11,9 @@ import RegisterPet from "./components/register-pet/RegisterPet.jsx";
 import ProfilePet from "./components/pet-profile/PetProfile.jsx";
 //Properties
 import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
+import EditProfile from "./components/user-profile-page/EditProfile.jsx";
+import BecomeCaretaker from "./components/user-profile-page/BecomeCaretaker.jsx";
+import UserPetList from "./components/user-pet-list/UserPetList.jsx";
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
         <Route path="/register-pet" element={<RegisterPet />} />
         <Route path="/pet-profile/:id" element={<ProfilePet />} />
         <Route path="/properties-menu" element={<PropertiesMenu />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/become-caretaker" element={<BecomeCaretaker />} />
+        <Route path="/pet-list" element={<UserPetList />} />
       </Routes>
     </BrowserRouter>
   );
