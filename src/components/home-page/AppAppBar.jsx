@@ -14,6 +14,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorModeIconDropdown from '../shared-theme/ColorModeIconDropdown.jsx';
 import {PawsyIcon} from '../sign-up/CustomIcons.jsx';
 import Typography from "@mui/material/Typography";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -33,9 +34,19 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const [hasToken, setHasToken] = React.useState(false);
+
+  React.useEffect(() => {
+    setHasToken(!!localStorage.getItem('token'));
+  }, []);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
   };
 
   return (
@@ -68,20 +79,39 @@ export default function AppAppBar() {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="text" size="small" onClick={
-                () => {
-                    window.location.href = '/sign-in';
-                }
-            }>
-              Sign in
-            </Button>
-            <Button color="primary" variant="contained" size="small" onClick={
-              ()=> {
-                window.location.href = '/sign-up';
-              }
-            }>
-              Sign up
-            </Button>
+            {!hasToken && (
+              <>
+                <Button color="primary" variant="text" size="small" onClick={
+                    () => {
+                        window.location.href = '/sign-in';
+                    }
+                }>
+                  Sign in
+                </Button>
+                <Button color="primary" variant="contained" size="small" onClick={
+                  ()=> {
+                    window.location.href = '/sign-up';
+                  }
+                }>
+                  Sign up
+                </Button>
+              </>
+            )}
+            {hasToken && (
+              <>
+                <Button color="secondary" variant="outlined" size="small" onClick={handleLogout}>
+                  Log out
+                </Button>
+                <IconButton
+                  color="primary"
+                  aria-label="User profile"
+                  onClick={() => window.location.href = '/user-profile'}
+                  sx={{ ml: 1 }}
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              </>
+            )}
             <ColorModeIconDropdown />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
@@ -110,16 +140,40 @@ export default function AppAppBar() {
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-                <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
-                  </Button>
-                </MenuItem>
+                {!hasToken && (
+                  <>
+                    <MenuItem>
+                      <Button color="primary" variant="contained" fullWidth>
+                        Sign up
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button color="primary" variant="outlined" fullWidth>
+                        Sign in
+                      </Button>
+                    </MenuItem>
+                  </>
+                )}
+                {hasToken && (
+                  <>
+                    <MenuItem>
+                      <Button color="secondary" variant="outlined" fullWidth onClick={handleLogout}>
+                        Log out
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <IconButton
+                        color="primary"
+                        aria-label="User profile"
+                        onClick={() => window.location.href = '/user-profile'}
+                        sx={{ width: '100%' }}
+                      >
+                        <AccountCircleIcon fontSize="large" />
+                        <span style={{ marginLeft: 8 }}>Perfil</span>
+                      </IconButton>
+                    </MenuItem>
+                  </>
+                )}
               </Box>
             </Drawer>
           </Box>
