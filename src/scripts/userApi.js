@@ -77,8 +77,12 @@ export const userApi = {
     }
   },
 
-  async updateUserProfile(token, name) {
-    console.log(name);
+  async updateUserProfile(token, user) {
+    console.log(user);
+    const userData = {
+      "nombre": user.nombre,
+      "cuidador": user.cuidador || false
+    }
     try {
       const response = await fetch(`${API_URL}/api/`, {
         method: "PUT",
@@ -86,7 +90,7 @@ export const userApi = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: name
+        body: JSON.stringify(userData)
       });
       if (!response.ok) {
         const errorData = await response.json();
