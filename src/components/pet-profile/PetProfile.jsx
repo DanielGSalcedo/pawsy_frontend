@@ -15,7 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CategoryIcon from '@mui/icons-material/Category';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import axios from 'axios'; // Listo para usar después
+import { petApi } from '../../scripts/petApi';
 
 const ProfileContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
@@ -68,30 +68,37 @@ export default function PetProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simular carga desde backend
-    const timer = setTimeout(() => {
-      setPet({
-        id,
-        nombre: 'Max',
-        tipo: 'Perro',
-        edad: 3,
-        descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
+    let isMounted = true;
+    setLoading(true);
+    petApi.get_pet_by_id(id)
+      .then(data => {
+        if (isMounted && data && data.id) {
+          setPet({
+            id: data.id,
+            nombre: data.nombre,
+            tipo: data.tipo || 'Tipo desconocido',
+            edad: data.edad,
+            descripcion: data.descripcion,
+          });
+        } else {
+          throw new Error('Mascota no encontrada');
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        alert('No se pudo obtener la mascota. Mostrando datos simulados.');
+        if (isMounted) {
+          setPet({
+            id,
+            nombre: 'Max',
+            tipo: 'Perro',
+            edad: 3,
+            descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
+          });
+          setLoading(false);
+        }
       });
-      setLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timer);
-
-    // ⚠️ Código real para usar luego:
-    // axios.get(`http://localhost:4000/api/pets/${id}`)
-    //   .then(res => {
-    //     setPet(res.data);
-    //     setLoading(false);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     setLoading(false);
-    //   });
+    return () => { isMounted = false; };
   }, [id]);
 
   return (
