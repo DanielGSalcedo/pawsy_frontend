@@ -70,13 +70,4 @@ export const userApi = {
     console.log("User logged out");
     return true;
   },
-
-  async resetPassword(token, newPassword) {
-    if (token == null || newPassword == null) {
-      throw new Error("Token and new password are required");
-    }
-    console.log("Token:", token);
-    console.log("New Password:", newPassword);
-    return true;
-  },
 };

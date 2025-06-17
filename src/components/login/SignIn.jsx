@@ -83,12 +83,13 @@ export default function SignIn(props) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
+    const user = {
       email: data.get('email'),
       password: data.get('password'),
     });
     event.preventDefault();
     handleSignIn(data.get('email'), data.get('password'));
+
   };
 
   const validateInputs = () => {
@@ -218,4 +219,5 @@ async function handleSignIn(email, password) {
     console.error('Sign in failed:', response.statusText);
     alert('Sign in failed. Please check your credentials and try again.');
   }
+
 }
