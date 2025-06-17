@@ -231,6 +231,7 @@ async function handleSignUp(user) {
       const response = await userApi.signUp(user);
       console.log(response);
       console.log(response.token);
+      localStorage.setItem('token', response.token);
       // alert("try?");
       if(response.ok) window.location.href = '/';
     } catch (error) {
