@@ -12,6 +12,10 @@ import ProfilePet from "./components/pet-profile/PetProfile.jsx";
 //Properties
 import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
 import PropertyView from "./components/see-property/SeeProperty.jsx";
+import EditProfile from "./components/user-profile-page/EditProfile.jsx";
+import BecomeCaretaker from "./components/user-profile-page/BecomeCaretaker.jsx";
+import UserPetList from "./components/user-pet-list/UserPetList.jsx";
+import PetEdit from "./components/pet-edit/PetEdit.jsx";
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
         <Route path="/properties-menu" element={<PropertiesMenu />} />
         <Route path="/property/:id" element={<PropertyView />} />
         {/* Add more routes as needed */}
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/become-caretaker" element={<BecomeCaretaker />} />
+        <Route path="/pet-list" element={<UserPetList />} />
+        <Route path="/pet-edit/:id" element={<PetEdit />} />
       </Routes>
     </BrowserRouter>
   );

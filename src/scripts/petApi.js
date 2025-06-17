@@ -16,7 +16,7 @@
  *   "tipoId": number
  * }
  */
-const API_URL = 'https://api101.proyectos.fireploy.online/api/mascota';
+const API_URL = 'https://pawsy-backend.onrender.com/api';
 
 
 export const petApi = {
@@ -36,9 +36,9 @@ export const petApi = {
             alert('No ha llenado los datos de la mascota!');
             throw new Error('No ha llenado los datos de la mascota!');
         } else {
-            return fetch('https://api101.proyectos.fireploy.online/api/mascota', {
+            return fetch(`${API_URL}/mascota`, {
                 method: 'POST',
-                header: {
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
@@ -57,7 +57,7 @@ export const petApi = {
      */
     async render_types() {
         try {
-            const response = await fetch('https://api101.proyectos.fireploy.online/api/tipos-mascota', {
+            const response = await fetch(`${API_URL}/tipos-mascota`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export const petApi = {
     async render_pets() {
         try {
             // Obtener mascotas
-            const response = await fetch(API_URL, {
+            const response = await fetch(`${API_URL}/mascota/lista-mascotas`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export const petApi = {
     */
     async get_pet_by_id(id) {
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/mascota/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -136,6 +136,10 @@ export const petApi = {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const pet = await response.json();
+            const petTypes = await this.render_types();
+            const type = petTypes.find(type => type.id === pet.tipoId);
+            pet.tipo = type ? type.nombre : 'Tipo desconocido';
+            console.log('Pet fetched by ID:', pet);
             return pet;
         } catch (error) {
             console.error('Error fetching pet by id:', error);
@@ -146,7 +150,7 @@ export const petApi = {
     async update_pet(id, pet) {
         console.log('Updating pet with ID:', id, 'and data:', pet);
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/mascota/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -166,7 +170,7 @@ export const petApi = {
 
     async delete_pet(id) {
         try{
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/mascota/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -176,7 +180,7 @@ export const petApi = {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return await response.json();
+            return response;
         } catch (error) {
             console.error('Error deleting pet:', error);
             throw new Error('No se pudo eliminar la mascota');

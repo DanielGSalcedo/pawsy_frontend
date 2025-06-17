@@ -1,4 +1,4 @@
-const API_URL = "https://api101.proyectos.fireploy.online";
+const API_URL = "https://pawsy-backend.onrender.com";
 // const API_KEY = "PMAK-68321a03671fac000137a1dc-5a67697d08fc443ed193b1fe9d684a691b";
 
 export const userApi = {
@@ -70,36 +70,51 @@ export const userApi = {
         const errorData = await response.json();
         throw new Error(`Error: ${errorData.message || "Unknown error"}`);
       }
-      return response.json();
+      return await response.json();
     } catch (error) {
       console.error("Error al obtener el perfil del usuario:", error);
       throw error;
     }
   },
 
-  async updateUserProfile(token, user) {
-    console.log(user);
-    const userData = {
-      "nombre": user.nombre,
-      "cuidador": user.cuidador || false
-    }
+  async updateUserProfile(token, name) {
     try {
-      const response = await fetch(`${API_URL}/api/`, {
+      const response = await fetch(`${API_URL}/api/usuario/${name}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(userData)
+        }
       });
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = response;
         throw new Error(`Error: ${errorData.message || "Unknown error"}`);
       }
-      return response.json();
+      return response;
     } catch (error) {
       console.error("Error al obtener el perfil del usuario:", error);
       throw error;
+    }
+  },
+
+  async becomeCaretaker(token, telefono) {
+    console.log(telefono);
+    try {
+      const response = await fetch(`${API_URL}/api/usuario/to-cuidador/${telefono}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if (!response.ok) {
+        const errorData = response;
+        throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+      }
+      return response;
+    } catch (error) {
+      console.error("Error al convertirse en cuidador:", error);
+      // throw error;
     }
   },
 
