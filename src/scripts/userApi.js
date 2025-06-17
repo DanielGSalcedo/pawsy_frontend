@@ -1,4 +1,4 @@
-const API_URL = "https://api101.proyectos.fireploy.online";
+const API_URL = "https://pawsy-backend.onrender.com";
 // const API_KEY = "PMAK-68321a03671fac000137a1dc-5a67697d08fc443ed193b1fe9d684a691b";
 
 export const userApi = {

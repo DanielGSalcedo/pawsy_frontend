@@ -16,7 +16,7 @@
  *   "tipoId": number
  * }
  */
-const API_URL = 'https://api101.proyectos.fireploy.online/api/mascota';
+const API_URL = 'https://pawsy-backend.onrender.com/api/mascota';
 
 
 export const petApi = {
@@ -36,7 +36,7 @@ export const petApi = {
             alert('No ha llenado los datos de la mascota!');
             throw new Error('No ha llenado los datos de la mascota!');
         } else {
-            return fetch('https://api101.proyectos.fireploy.online/api/mascota', {
+            return fetch(`${API_URL}`, {
                 method: 'POST',
                 header: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export const petApi = {
      */
     async render_types() {
         try {
-            const response = await fetch('https://api101.proyectos.fireploy.online/api/tipos-mascota', {
+            const response = await fetch(`${API_URL}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
