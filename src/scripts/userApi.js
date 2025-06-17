@@ -1,17 +1,18 @@
-const API_URL = "https://6dd2de48-17d3-4059-992e-4feb7068963b.mock.pstmn.io";
+const API_URL = "https://api101.proyectos.fireploy.online";
 // const API_KEY = "PMAK-68321a03671fac000137a1dc-5a67697d08fc443ed193b1fe9d684a691b";
 
 export const userApi = {
   async signUp(user) {
-        console.log(user);
+        // console.log(user);
         // Asegurar que siempre se use "CLIENTE" como tipoUsuario
         const userData = {
             email: user.email,
-            password: user.password,
+            password: user.clave,
             nombre: user.nombre,
             // telefono: user.telefono || "", // Si no se proporciona, se usa una cadena vacía
             tipoUsuario: "CLIENTE"
         };
+        console.log(userData);
 
         try {
             const response = await fetch(`${API_URL}/auth/register`, {
