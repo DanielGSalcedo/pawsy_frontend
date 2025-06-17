@@ -78,19 +78,23 @@ export const userApi = {
   },
 
   async updateUserProfile(token, name) {
-    console.log(name);
+
     try {
+      const response = await fetch(`${API_URL}/api/usuario/${name}`, {
       const response = await fetch(`${API_URL}/api/usuario/${name}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         }
+        }
       });
       if (!response.ok) {
         const errorData = response;
+        const errorData = response;
         throw new Error(`Error: ${errorData.message || "Unknown error"}`);
       }
+      return response;
       return response;
     } catch (error) {
       console.error("Error al obtener el perfil del usuario:", error);

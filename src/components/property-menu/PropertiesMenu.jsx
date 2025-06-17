@@ -209,7 +209,7 @@ const PropertyCard = ({ property, navigate }) => (
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => navigate(`/propiedad/${property.id}`)}
+        onClick={() => navigate(`/property/${property.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
@@ -217,22 +217,6 @@ const PropertyCard = ({ property, navigate }) => (
         }}
       >
         Ver Detalle
-      </Button>
-      <Button
-        fullWidth
-        variant="contained"
-        onClick={() => navigate(`/editar-propiedad/${property.id}`)}
-        sx={{
-          borderRadius: 2,
-          textTransform: 'none',
-          fontWeight: 600,
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: theme => `0 4px 12px ${theme.palette.primary.main}40`,
-          },
-        }}
-      >
-        Editar
       </Button>
     </Stack>
   </StyledCard>
