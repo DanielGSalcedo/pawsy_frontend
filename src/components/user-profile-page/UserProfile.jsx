@@ -7,14 +7,12 @@ import { styled } from '@mui/material/styles';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import Avatar from '@mui/material/Avatar';
-import PetsIcon from '@mui/icons-material/Pets';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import CategoryIcon from '@mui/icons-material/Category';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { userApi } from '../../scripts/userApi';
 // import axios from 'axios'; // Listo para usar después
 
 const ProfileContainer = styled(Stack)(({ theme }) => ({
@@ -69,29 +67,24 @@ export default function UserProfile() {
 
   useEffect(() => {
     // Simular carga desde backend
-    const timer = setTimeout(() => {
-      setUser({
-        id,
-        nombre: 'Pepito Pérez',
-        email: 'pepitoperez@domain.com',
-        direccion: 'Calle Falsa 123',
-        telefono: 1234567890,
-      });
-      setLoading(false);
-    }, 800);
+    // const timer = setTimeout(() => {
+    //   setUser({
+    //     id,
+    //     nombre: 'Pepito Pérez',
+    //     email: 'pepitoperez@domain.com',
+    //     direccion: 'Calle Falsa 123',
+    //     telefono: 1234567890,
+    //     avatar: 'https://via.placeholder.com/80',
+    //   });
+    //   setLoading(false);
+    // }, 800);
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
 
     // ⚠️ Código real para usar luego:
-    // axios.get(`http://localhost:4000/api/pets/${id}`)
-    //   .then(res => {
-    //     setPet(res.data);
-    //     setLoading(false);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     setLoading(false);
-    //   });
+    const user = fetchUserProfile(id);
+    setUser(user);
+    setLoading(false);
   }, [id]);
 
   return (
@@ -111,56 +104,24 @@ export default function UserProfile() {
             </Button>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              <Avatar
-                sx={{
-                  width: 80,
-                  height: 80,
-                  background: theme =>
-                    `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                  boxShadow: 4,
-                  transition: 'transform 0.3s ease',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              >
-                <PetsIcon fontSize="large" sx={{ color: 'white' }} />
-              </Avatar>
-
+              
               <Typography variant="h5" component="h1" fontWeight="bold" textAlign="center">
-                Perfil de {user.nombre}
+                {user.nombre}
               </Typography>
 
               <Divider sx={{ width: '100%', my: 1 }} />
 
               <Stack direction="row" spacing={1} alignItems="center">
-                <CategoryIcon color="action" />
-                <Typography variant="body1"><strong>Tipo:</strong> {user.tipo}</Typography>
+                <Typography variant="body1"><strong>Teléfono:</strong> {user.telefono}</Typography>
               </Stack>
 
               <Stack direction="row" spacing={1} alignItems="center">
-                <CalendarTodayIcon color="action" />
-                <Typography variant="body1"><strong>Edad:</strong> {user.edad} años</Typography>
+                <Typography variant="body1"><strong>Email:</strong> {user.email}</Typography>
               </Stack>
 
-              <Typography variant="body1" sx={{ mt: 2 }}><strong>Descripción:</strong></Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={theme => ({
-                  textAlign: 'center',
-                  px: 2,
-                  py: 1.5,
-                  borderRadius: 2,
-                  fontStyle: 'italic',
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? 'rgba(255, 255, 255, 0.05)'
-                      : 'rgba(0, 0, 0, 0.04)',
-                })}
-              >
-                {user.descripcion}
-              </Typography>
+              {/* <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="body1"><strong>Dirección:</strong> {user.direccion}</Typography>
+              </Stack> */}
 
               <Button
                 variant="contained"
@@ -176,9 +137,49 @@ export default function UserProfile() {
                     boxShadow: theme => `0 4px 20px ${theme.palette.primary.main}55`,
                   },
                 }}
-                onClick={() => navigate('/pet-edit')}
+                onClick={() => navigate('/edit-profile')}
               >
-                Editar perfil
+                Edit Profile
+              </Button>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                  borderRadius: 2,
+                  '&:hover': {
+                    backgroundColor: theme => theme.palette.primary.dark,
+                    boxShadow: theme => `0 4px 20px ${theme.palette.primary.main}55`,
+                  },
+                }}
+                onClick={() => navigate('/pet-list')}
+              >
+                My Pets
+              </Button>
+
+              <Divider sx={{ width: '100%', my: 1 }} />
+              <Button
+                variant="text"
+                fullWidth
+                sx={{
+                  mt: 1,
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                  borderRadius: 2,
+                  backgroundColor: 'rgba(255, 0, 0, 0.85)',
+                  backgroundImage: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                    boxShadow: `0 4px 20px ${'red'}55`,
+                  },
+                }}
+                onClick={() => {logOut(); navigate('/');}}
+              >
+                Log out
               </Button>
             </Box>
           </Card>
@@ -186,4 +187,13 @@ export default function UserProfile() {
       </ProfileContainer>
     </AppTheme>
   );
+}
+
+function logOut(){
+  localStorage.removeItem('token');
+}
+async function fetchUserProfile(id) {
+  const response = await userApi.getUserProfile(id);
+  console.log(response);
+  return await response.json();
 }
