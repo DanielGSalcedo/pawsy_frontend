@@ -313,7 +313,7 @@ export default function UserProperties() {
   return (
     <AppTheme>
       <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
-      <DashboardContainer direction="column" alignItems="center">
+      { properties.length != 0 ? (<DashboardContainer direction="column" alignItems="center">
         <Box
           sx={{
             width: "100%",
@@ -355,10 +355,40 @@ export default function UserProperties() {
                   <PropertyCard property={property} navigate={navigate} />
                 </Grid>
               ))}
+              <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <AddPropertyCard onClick={() => navigate('/register-property')}>
+                  <AddIcon fontSize="large" color="action" sx={{ mb: 1, fontSize: 48 }} />
+                  <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 500 }}>
+                    Añadir nueva propiedad
+                  </Typography>
+                </AddPropertyCard>
+              </Grid>
             </Grid>
           )}
         </Box>
-      </DashboardContainer>
+      </DashboardContainer>) : (<EmptyState navigate={navigate} />)}
+      {!loading && properties.length > 0 && !error && (
+        <Fab
+          color="error"
+          aria-label="eliminar"
+          onClick={() => navigate('/remove-property')}
+          sx={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 1000,
+            backgroundColor: 'error.main',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: 'error.dark',
+              transform: 'scale(1.05)',
+            },
+            transition: 'transform 0.2s, background-color 0.2s',
+          }}
+        >
+          <DeleteIcon />
+        </Fab>
+      )}
       {/* Snackbar para mostrar errores */}
       <Snackbar
         open={!!error}

@@ -122,7 +122,7 @@ export const propertyApi = {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return await response.json();
+            return response;
         } catch (error) {
             console.error('Error registering property:', error);
             throw new Error('No se pudo registrar la propiedad');
