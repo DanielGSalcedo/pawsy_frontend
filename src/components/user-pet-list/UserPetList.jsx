@@ -188,7 +188,7 @@ const PetCard = ({ pet, navigate }) => (
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => navigate(`/perfil/${pet.id}`)}
+        onClick={() => navigate(`/pet-profile/${pet.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
@@ -200,7 +200,7 @@ const PetCard = ({ pet, navigate }) => (
       <Button
         fullWidth
         variant="contained"
-        onClick={() => navigate(`/editar/${pet.id}`)}
+        onClick={() => navigate(`/pet-edit/${pet.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
