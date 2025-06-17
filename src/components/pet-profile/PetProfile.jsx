@@ -87,6 +87,7 @@ export default function PetProfile() {
       })
       .catch(err => {
         alert('No se pudo obtener la mascota. Mostrando datos simulados.');
+        console.error('Error al obtener la mascota:', err);
         if (isMounted) {
           setPet({
             id,
