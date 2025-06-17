@@ -12,6 +12,7 @@ import {
 import { styled } from '@mui/material/styles';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
+import { userApi } from '../../scripts/userApi';
 // import axios from 'axios'; // Activar luego para conexión real
 
 const ProfileContainer = styled(Stack)(({ theme }) => ({
@@ -100,21 +101,19 @@ export default function EditProfile() {
 
   useEffect(() => {
     // Simulación de carga de datos
-    const timer = setTimeout(() => {
-      setForm({
-        nombre: 'Max',
-        tipo: 'Perro',
-        edad: '3',
-        descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
-      });
-    }, 500);
+    // const timer = setTimeout(() => {
+    //   setForm({
+    //     nombre: 'Max',
+    //     tipo: 'Perro',
+    //     edad: '3',
+    //     descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
+    //   });
+    // }, 500);
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
 
-    // Código real backend:
-    // axios.get(`http://localhost:4000/api/pets/${id}`)
-    //   .then(res => setForm(res.data))
-    //   .catch(err => console.error(err));
+    const user = fetchUserProfile();
+    setForm(user);
   }, [id]);
 
   const handleChange = e => {
@@ -125,20 +124,19 @@ export default function EditProfile() {
   const handleSubmit = e => {
     e.preventDefault();
     setSaving(true);
-    setTimeout(() => {
-      console.log('Mascota actualizada:', form);
-      alert('Cambios guardados (simulado)');
-      setSaving(false);
-      navigate(`/perfil/${id}`);
-    }, 1000);
+    // setTimeout(() => {
+    //   console.log('Mascota actualizada:', form);
+    //   alert('Cambios guardados (simulado)');
+    //   setSaving(false);
+    //   navigate(`/perfil/${id}`);
+    // }, 1000);
 
-    // Código real backend:
-    // axios.put(`http://localhost:4000/api/pets/${id}`, form)
-    //   .then(() => navigate(`/perfil/${id}`))
-    //   .catch(err => {
-    //     alert("Error al guardar");
-    //     setSaving(false);
-    //   });
+    if(saveUserProfile(form.nombre)){
+        alert('Cambios guardados correctamente');
+        setSaving(false);
+        navigate(`/perfil/${id}`);
+    }
+    
   };
 
   if (!form) {
@@ -179,7 +177,7 @@ export default function EditProfile() {
               />
             </Field>
 
-            <Field>
+            {/* <Field>
               <Typography variant="body2" color="text.secondary" mb={0.5}>
                 Email *
               </Typography>
@@ -190,7 +188,7 @@ export default function EditProfile() {
                 onChange={handleChange}
                 required
               />
-            </Field>
+            </Field> */}
 
             {/* <Field>
               <Typography variant="body2" color="text.secondary" mb={0.5}>
@@ -223,4 +221,20 @@ export default function EditProfile() {
       </ProfileContainer>
     </AppTheme>
   );
+}
+
+async function saveUserProfile(name) {
+    const response = await userApi.updateUserProfile(localStorage.getItem('token'), name);
+    console.log(response);
+    if(!response.ok) {
+        alert("Error al guardar el perfil");
+        console.error("Error al guardar el perfil: ", response);
+        return false;
+    } else return true;
+}
+
+async function fetchUserProfile() {
+  const response = await userApi.getUserProfile(localStorage.getItem('token'));
+  console.log(response);
+  return await response.json();
 }
