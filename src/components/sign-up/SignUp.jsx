@@ -233,7 +233,10 @@ async function handleSignUp(user) {
       console.log(response.token);
       localStorage.setItem('token', response.token);
       // alert("try?");
-      if(response.ok) window.location.href = '/';
+      if(response.ok){
+        alert("Registrado correctamente, para iniciar sesión confirma tu dirección de correo electrónico.");
+        window.location.href = '/user-profile';
+      }
     } catch (error) {
       console.error('Error signing up:', error);
       alert('Error signing up. Please try again.');

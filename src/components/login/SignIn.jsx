@@ -17,6 +17,7 @@ import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, PawsyIcon } from '../sign-up/CustomIcons';
 import ForgotPassword from './ForgotPassword';
+import { userApi } from '../../scripts/userApi';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -86,6 +87,8 @@ export default function SignIn(props) {
       email: data.get('email'),
       password: data.get('password'),
     });
+    event.preventDefault();
+    handleSignIn(data.get('email'), data.get('password'));
   };
 
   const validateInputs = () => {
@@ -197,37 +200,22 @@ export default function SignIn(props) {
               Forgot your password?
             </Link>
           </Box>
-          <Divider>or</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Sign in with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Sign in with Facebook
-            </Button>
-            <Typography sx={{ textAlign: 'center' }}>
-              Don&apos;t have an account?{' '}
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
-                Sign up
-              </Link>
-            </Typography>
-          </Box>
         </Card>
       </SignInContainer>
     </AppTheme>
   );
+}
+
+async function handleSignIn(email, password) {
+  const response = await userApi.signIn(email, password);
+  console.log(response);
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    localStorage.setItem('token', data.token);
+    window.location.href = '/user-profile';
+  } else {
+    console.error('Sign in failed:', response.statusText);
+    alert('Sign in failed. Please check your credentials and try again.');
+  }
 }
