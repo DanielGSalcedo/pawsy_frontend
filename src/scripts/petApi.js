@@ -136,6 +136,10 @@ export const petApi = {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const pet = await response.json();
+            const petTypes = await this.render_types();
+            const type = petTypes.find(type => type.id === pet.tipoId);
+            pet.tipo = type ? type.nombre : 'Tipo desconocido';
+            console.log('Pet fetched by ID:', pet);
             return pet;
         } catch (error) {
             console.error('Error fetching pet by id:', error);

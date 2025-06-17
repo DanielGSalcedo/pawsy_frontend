@@ -14,6 +14,7 @@ import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
 import EditProfile from "./components/user-profile-page/EditProfile.jsx";
 import BecomeCaretaker from "./components/user-profile-page/BecomeCaretaker.jsx";
 import UserPetList from "./components/user-pet-list/UserPetList.jsx";
+import PetEdit from "./components/pet-edit/PetEdit.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/become-caretaker" element={<BecomeCaretaker />} />
         <Route path="/pet-list" element={<UserPetList />} />
+        <Route path="/pet-edit/:id" element={<PetEdit />} />
       </Routes>
     </BrowserRouter>
   );
