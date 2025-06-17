@@ -32,7 +32,7 @@ function App() {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/become-caretaker" element={<BecomeCaretaker />} />
         <Route path="/pet-list" element={<UserPetList />} />
-        <Route path="/pet-edit" element={<PetEdit />} />
+        <Route path="/pet-edit/:id" element={<PetEdit />} />
       </Routes>
     </BrowserRouter>
   );

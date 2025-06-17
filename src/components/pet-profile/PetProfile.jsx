@@ -222,7 +222,7 @@ export default function PetProfile() {
                       `0 4px 20px ${theme.palette.primary.main}55`,
                   },
                 }}
-                onClick={() => navigate("/pet-edit")}
+                onClick={() => navigate(`/pet-edit/${id}`)}
               >
                 Editar perfil
               </Button>
