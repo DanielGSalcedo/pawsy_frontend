@@ -10,16 +10,16 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Fab, // Nuevo componente añadido
+  Fab,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PetsIcon from '@mui/icons-material/Pets';
+import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete'; // Nuevo ícono añadido
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import { petApi } from '../../scripts/petApi';
+import { propertyApi } from '../../scripts/propertyApi';
 
 const DashboardContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
@@ -48,10 +48,10 @@ const StyledCard = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  maxWidth: 320,
+  maxWidth: 340,
   minWidth: 260,
   minHeight: 380,
-  maxHeight: 420,
+  maxHeight: 440,
   margin: 'auto',
   padding: theme.spacing(3),
   gap: theme.spacing(2),
@@ -72,7 +72,7 @@ const StyledCard = styled('div')(({ theme }) => ({
   }),
 }));
 
-const AddPetCard = styled(StyledCard)(({ theme }) => ({
+const AddPropertyCard = styled(StyledCard)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
@@ -80,53 +80,14 @@ const AddPetCard = styled(StyledCard)(({ theme }) => ({
   backgroundColor: 'transparent',
   minHeight: '350px',
   '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark' 
-      ? 'rgba(255, 255, 255, 0.05)' 
+    backgroundColor: theme.palette.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.05)'
       : 'rgba(0, 0, 0, 0.03)',
   },
 }));
 
-// Datos de ejemplo para mascotas
-// const samplePets = [
-//   {
-//     id: 1,
-//     nombre: 'Max',
-//     tipo: 'Perro',
-//     edad: 3,
-//     descripcion: 'Amigable y juguetón. Le encanta correr en el parque y jugar con pelotas.',
-//   },
-//   {
-//     id: 2,
-//     nombre: 'Luna',
-//     tipo: 'Gato',
-//     edad: 2,
-//     descripcion: 'Muy curiosa y le gusta dormir al sol. Tímida al principio pero cariñosa cuando confía.',
-//   },
-//   {
-//     id: 3,
-//     nombre: 'Rocky',
-//     tipo: 'Perro',
-//     edad: 5,
-//     descripcion: 'Tranquilo y protector. Excelente compañero para caminatas largas.',
-//   },
-//   {
-//     id: 4,
-//     nombre: 'Mia',
-//     tipo: 'Gato',
-//     edad: 1,
-//     descripcion: 'Energética y juguetona. Siempre buscando nuevas aventuras en casa.',
-//   },
-//   {
-//     id: 5,
-//     nombre: 'Toby',
-//     tipo: 'Conejo',
-//     edad: 2,
-//     descripcion: 'Tranquilo y amigable. Le encanta mordisquear zanahorias y jugar en el jardín.',
-//   },
-// ];
-
-// Componente de tarjeta de mascota
-const PetCard = ({ pet, navigate }) => (
+// Componente de tarjeta de propiedad
+const PropertyCard = ({ property, navigate }) => (
   <StyledCard>
     <Stack alignItems="center" spacing={1.5}>
       <Avatar
@@ -138,7 +99,7 @@ const PetCard = ({ pet, navigate }) => (
           boxShadow: 4,
         }}
       >
-        <PetsIcon fontSize="large" sx={{ color: 'white' }} />
+        <HomeIcon fontSize="large" sx={{ color: 'white' }} />
       </Avatar>
       <Typography
         variant="h6"
@@ -151,16 +112,31 @@ const PetCard = ({ pet, navigate }) => (
           whiteSpace: 'nowrap',
           textAlign: 'center',
         }}
-        title={pet.nombre}
+        title={property.nombre}
       >
-        {pet.nombre}
+        {property.nombre}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{
+          width: '100%',
+          maxWidth: 220,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          textAlign: 'center',
+        }}
+        title={property.direccion}
+      >
+        {property.direccion}
       </Typography>
       <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          {pet.tipo}
+          Capacidad: {property.capacidad}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {pet.edad} años
+          ${property.precioPorNoche} / noche
         </Typography>
       </Stack>
       <Typography
@@ -181,26 +157,71 @@ const PetCard = ({ pet, navigate }) => (
           width: '100%',
         })}
       >
-        {pet.descripcion}
+        {property.descripcion}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{
+          width: '100%',
+          maxWidth: 220,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          textAlign: 'center',
+        }}
+        title={property.usuario?.nombre}
+      >
+        Propietario: {property.usuario?.nombre}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{
+          width: '100%',
+          maxWidth: 220,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          textAlign: 'center',
+        }}
+        title={property.usuario?.email}
+      >
+        Email: {property.usuario?.email}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{
+          width: '100%',
+          maxWidth: 220,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          textAlign: 'center',
+        }}
+        title={property.servicios?.map(s => s.nombre).join(', ')}
+      >
+        Servicios: {property.servicios?.map(s => s.nombre).join(', ') || 'Ninguno'}
       </Typography>
     </Stack>
     <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => navigate(`/pet-profile/${pet.id}`)}
+        onClick={() => navigate(`/propiedad/${property.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
           fontWeight: 500,
         }}
       >
-        Ver Perfil
+        Ver Detalle
       </Button>
       <Button
         fullWidth
         variant="contained"
-        onClick={() => navigate(`/pet-edit/${pet.id}`)}
+        onClick={() => navigate(`/editar-propiedad/${property.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
@@ -222,21 +243,21 @@ const LoadingState = () => (
   <Stack alignItems="center" mt={6} spacing={2}>
     <CircularProgress />
     <Typography variant="body2" color="text.secondary">
-      Cargando mascotas...
+      Cargando propiedades...
     </Typography>
   </Stack>
 );
 
-// Componente para estado sin mascotas
+// Componente para estado sin propiedades
 const EmptyState = ({ navigate }) => (
   <Stack alignItems="center" spacing={3} mt={4}>
     <Typography variant="h6" color="text.secondary">
-      No tienes mascotas registradas
+      No hay propiedades registradas
     </Typography>
     <Button
       variant="contained"
       startIcon={<AddIcon />}
-      onClick={() => navigate('/register-pet')}
+      onClick={() => navigate('/register-property')}
       sx={{
         borderRadius: 2,
         textTransform: 'none',
@@ -249,7 +270,7 @@ const EmptyState = ({ navigate }) => (
         },
       }}
     >
-      Añadir primera mascota
+      Añadir primera propiedad
     </Button>
   </Stack>
 );
@@ -257,14 +278,14 @@ const EmptyState = ({ navigate }) => (
 // Componente para estado de error (solo botón de añadir)
 const ErrorAddOnly = ({ navigate }) => {
   useEffect(() => {
-    alert('Error al cargar las mascotas.');
+    alert('Error al cargar las propiedades.');
   }, []);
   return (
     <Stack alignItems="center" spacing={3} mt={4}>
       <Button
         variant="contained"
         startIcon={<AddIcon />}
-        onClick={() => navigate('/register-pet')}
+        onClick={() => navigate('/register-property')}
         sx={{
           borderRadius: 2,
           textTransform: 'none',
@@ -277,43 +298,66 @@ const ErrorAddOnly = ({ navigate }) => {
           },
         }}
       >
-        Añadir nueva mascota
+        Añadir nueva propiedad
       </Button>
     </Stack>
   );
 };
 
-export default function UserPetList() {
-  const [pets, setPets] = useState([]);
+// Ejemplo de propiedades para fallback
+const sampleProperties = [
+  {
+    id: 1,
+    nombre: 'Casa de Playa',
+    direccion: 'Calle 123, Cartagena',
+    descripcion: 'Hermosa casa frente al mar, perfecta para vacaciones familiares.',
+    capacidad: 8,
+    precioPorNoche: 350000,
+    usuario: { id: 1, nombre: 'Juan Pérez', email: 'juan@email.com' },
+    servicios: [{ id: 1, nombre: 'Piscina' }, { id: 2, nombre: 'WiFi' }]
+  },
+  {
+    id: 2,
+    nombre: 'Apartamento Moderno',
+    direccion: 'Cra 45 #67-89, Bogotá',
+    descripcion: 'Apartamento céntrico, moderno y cómodo, cerca de todo.',
+    capacidad: 4,
+    precioPorNoche: 220000,
+    usuario: { id: 2, nombre: 'Ana Gómez', email: 'ana@email.com' },
+    servicios: [{ id: 3, nombre: 'Parqueadero' }]
+  }
+];
+
+export default function PropertiesMenu() {
+  const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Ahora usamos petApi.render_pets()
-  const fetchPets = async () => {
+  const fetchProperties = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Obtener mascotas desde la API
-      const data = await petApi.render_pets();
-      setPets(data);
+      // Obtener propiedades desde la API
+      const data = await propertyApi.render_properties();
+      if (Array.isArray(data) && data.length > 0) {
+        setProperties(data);
+      } else {
+        throw new Error('No se encontraron propiedades');
+      }
     } catch (err) {
-      console.error('Error fetching pets:', err);
-      setError('Error al cargar las mascotas.');
-      setPets([]); // No mostrar ejemplos
+      console.error('Error fetching properties:', err);
+      setError('Error al cargar las propiedades.');
+      setProperties(sampleProperties); // Mostrar ejemplos
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPets();
+    fetchProperties();
   }, []);
-
-  // const handleRetry = () => {
-  //   fetchPets();
-  // };
 
   const handleCloseError = () => {
     setError(null);
@@ -335,62 +379,52 @@ export default function UserPetList() {
             gutterBottom
             sx={{ mt: 2, mb: 3 }}
           >
-            Mis Mascotas
+            Propiedades
           </Typography>
           <Divider sx={{ mb: 4 }} />
           {loading ? (
             <LoadingState />
           ) : error ? (
-            <ErrorAddOnly navigate={navigate} />
-          ) : pets.length === 0 ? (
-            <EmptyState navigate={navigate} />
+            // Mostrar tarjetas de ejemplo si hay error
+            <Grid
+              container
+              spacing={4}
+              justifyContent="center"
+            >
+              {sampleProperties.map(property => (
+                <Grid item xs={12} sm={6} md={4} key={property.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <PropertyCard property={property} navigate={navigate} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : properties.length === 0 ? (
+            // Si no hay propiedades, también muestra ejemplos
+            <Grid
+              container
+              spacing={4}
+              justifyContent="center"
+            >
+              {sampleProperties.map(property => (
+                <Grid item xs={12} sm={6} md={4} key={property.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <PropertyCard property={property} navigate={navigate} />
+                </Grid>
+              ))}
+            </Grid>
           ) : (
             <Grid
               container
               spacing={4}
               justifyContent="center"
             >
-              {pets.map(pet => (
-                <Grid item xs={12} sm={6} md={4} key={pet.id} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <PetCard pet={pet} navigate={navigate} />
+              {properties.map(property => (
+                <Grid item xs={12} sm={6} md={4} key={property.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <PropertyCard property={property} navigate={navigate} />
                 </Grid>
               ))}
-              <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <AddPetCard onClick={() => navigate('/register-pet')}>
-                  <AddIcon fontSize="large" color="action" sx={{ mb: 1, fontSize: 48 }} />
-                  <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 500 }}>
-                    Añadir nueva mascota
-                  </Typography>
-                </AddPetCard>
-              </Grid>
             </Grid>
           )}
         </Box>
       </DashboardContainer>
-      {/* Botón flotante para eliminar mascotas (FAB) */}
-      {!loading && pets.length > 0 && !error && (
-        <Fab
-          color="error"
-          aria-label="eliminar"
-          onClick={() => navigate('/remove-pet')}
-          sx={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            zIndex: 1000,
-            backgroundColor: 'error.main',
-            color: 'white',
-            '&:hover': {
-              backgroundColor: 'error.dark',
-              transform: 'scale(1.05)',
-            },
-            transition: 'transform 0.2s, background-color 0.2s',
-          }}
-        >
-          <DeleteIcon />
-        </Fab>
-      )}
-
       {/* Snackbar para mostrar errores */}
       <Snackbar
         open={!!error}
