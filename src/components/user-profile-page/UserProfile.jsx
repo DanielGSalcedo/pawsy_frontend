@@ -172,7 +172,7 @@ export default function UserProfile() {
                     boxShadow: theme => `0 4px 20px ${theme.palette.primary.main}55`,
                   },
                 }}
-                onClick={() => navigate('/properties-menu')}
+                onClick={() => navigate('/user-properties')}
               >
                 My Properties
               </Button>
