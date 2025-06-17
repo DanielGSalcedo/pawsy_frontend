@@ -20,6 +20,8 @@ import SeeProperty from "./components/see-property/SeeProperty.jsx";
 
 import SeeActiveRents from "./components/active-rents/ActiveRents.jsx";
 import SeeActiveGuest from "./components/active-guests/ActiveGuests.jsx";
+import RegisterProperty from "./components/register-property/RegisterProperty.jsx";
+import RemoveProperty from "./components/remove-property/RemoveProperty.jsx";
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
         <Route path="/property/:id" element={<SeeProperty />} />
         <Route path="/view-active-rents" element={<SeeActiveRents />} />
         <Route path="/view-active-guests" element={<SeeActiveGuest />} />
+        <Route path="/register-property" element={<RegisterProperty />} />
+        <Route path="/remove-property" element={<RemoveProperty />} />
       </Routes>
     </BrowserRouter>
   );

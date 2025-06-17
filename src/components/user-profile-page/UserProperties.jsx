@@ -182,7 +182,7 @@ const PropertyCard = ({ property, navigate }) => (
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => navigate(`/propiedad/${property.id}`)}
+        onClick={() => navigate(`/property/${property.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: "none",
@@ -194,7 +194,8 @@ const PropertyCard = ({ property, navigate }) => (
       <Button
         fullWidth
         variant="contained"
-        onClick={() => navigate(`/editar-propiedad/${property.id}`)}
+        // onClick={() => navigate(`/editar-propiedad/${property.id}`)}
+        onClick={() => alert("Funcionalidad no implementada")}
         sx={{
           borderRadius: 2,
           textTransform: "none",
@@ -366,7 +367,8 @@ export default function UserProperties() {
                   py: 1.5,
                   boxShadow: "none",
                   "&:hover": {
-                    boxShadow: (theme) => `0 4px 12px ${theme.palette.primary.main}40`,
+                    boxShadow: (theme) =>
+                      `0 4px 12px ${theme.palette.primary.main}40`,
                   },
                 }}
               >
@@ -389,7 +391,8 @@ export default function UserProperties() {
                   py: 1.5,
                   boxShadow: "none",
                   "&:hover": {
-                    boxShadow: (theme) => `0 4px 12px ${theme.palette.primary.main}40`,
+                    boxShadow: (theme) =>
+                      `0 4px 12px ${theme.palette.primary.main}40`,
                   },
                 }}
               >
@@ -414,10 +417,48 @@ export default function UserProperties() {
                   <PropertyCard property={property} navigate={navigate} />
                 </Grid>
               ))}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                key="add-property"
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                <AddPropertyCard onClick={() => navigate("/register-property")}>
+                  <AddIcon fontSize="large" color="action" sx={{ mb: 1, fontSize: 48 }} />
+                  <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 500 }}>
+                    Añadir nueva propiedad
+                  </Typography>
+                </AddPropertyCard>
+              </Grid>
             </Grid>
           )}
         </Box>
       </DashboardContainer>
+      {/* Botón flotante para eliminar propiedades */}
+      {!loading && properties.length > 0 && !error && (
+        <Fab
+          color="error"
+          aria-label="eliminar"
+          onClick={() => navigate('/remove-property')}
+          sx={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 1000,
+            backgroundColor: 'error.main',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: 'error.dark',
+              transform: 'scale(1.05)',
+            },
+            transition: 'transform 0.2s, background-color 0.2s',
+          }}
+        >
+          <DeleteIcon />
+        </Fab>
+      )}
       {/* Snackbar para mostrar errores */}
       <Snackbar
         open={!!error}

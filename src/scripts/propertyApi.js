@@ -122,34 +122,78 @@ export const propertyApi = {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return await response.json();
+            return response;
         } catch (error) {
             console.error('Error registering property:', error);
             throw new Error('No se pudo registrar la propiedad');
         }
     },
 
-    // /**
-    //  * Obtener todos los servicios disponibles.
-    //  * @returns {Promise<Array>} Array de servicios.
-    //  */
-    // async render_services() {
-    //     try {
-    //         const response = await fetch('https://api101.proyectos.fireploy.online/api/servicios', {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //             }
-    //         });
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         const services = await response.json();
-    //         return services;
-    //     } catch (error) {
-    //         console.error('Error fetching services:', error);
-    //         throw new Error('No se pudieron obtener los servicios');
-    //     }
-    // }
+    async delete_property(id) {
+        try {
+            const response = await fetch(`${PROPERTY_API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response;
+        } catch (error) {
+            console.error('Error deleting property:', error);
+            throw new Error('No se pudo eliminar la propiedad');
+        }
+    },
+
+    /**
+     * Obtener todos los servicios disponibles.
+     * @returns {Promise<Array>} Array de servicios.
+     */
+    async render_services() {
+        try {
+            const response = await fetch('https://pawsy-backend.onrender.com/api/servicios/listar', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const services = await response.json();
+            return services;
+        } catch (error) {
+            console.error('Error fetching services:', error);
+            throw new Error('No se pudieron obtener los servicios');
+        }
+    }
 };
+
+
+// /**
+//  * Obtener todos los servicios disponibles.
+//  * @returns {Promise<Array>} Array de servicios.
+//  */
+// async render_services() {
+//     try {
+//         const response = await fetch('https://api101.proyectos.fireploy.online/api/servicios', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+//             }
+//         });
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const services = await response.json();
+//         return services;
+//     } catch (error) {
+//         console.error('Error fetching services:', error);
+//         throw new Error('No se pudieron obtener los servicios');
+//     }
+// }
