@@ -83,10 +83,6 @@ export default function SignIn(props) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    const user = {
-      email: data.get('email'),
-      password: data.get('password'),
-    });
     event.preventDefault();
     handleSignIn(data.get('email'), data.get('password'));
 
