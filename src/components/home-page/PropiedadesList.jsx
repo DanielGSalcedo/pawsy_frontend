@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import propiedadesApi from "../../scripts/propiedadesApi.js";
+import { propertyApi } from '../../scripts/propertyApi.js';
 
 // Card personalizada
 const SyledCard = styled(Card)({
@@ -91,7 +91,7 @@ const PropiedadesList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await propiedadesApi.getPropiedades();
+            const data = await propertyApi.render_properties();
             if (Array.isArray(data) && data.length > 0) {
                 setPropiedades(data);
             } else {

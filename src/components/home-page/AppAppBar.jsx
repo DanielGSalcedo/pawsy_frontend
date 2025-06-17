@@ -82,14 +82,14 @@ export default function AppAppBar() {
           >
             <Button color="primary" variant="text" size="small" onClick={
                 () => {
-                    window.location.href = '/sing-in';
+                    window.location.href = '/sign-in';
                 }
             }>
               Sign in
             </Button>
             <Button color="primary" variant="contained" size="small" onClick={
               ()=> {
-                window.location.href = '/sing-up';
+                window.location.href = '/sign-up';
               }
             }>
               Sign up

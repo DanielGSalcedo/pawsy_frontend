@@ -289,10 +289,10 @@ export default function UserProperties() {
 
       // Obtener propiedades desde la API
       const data = await propertyApi.getUserProperties();
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data) && data.length >= 0) {
         setProperties(data);
       } else {
-        throw new Error("No se encontraron propiedades");
+        throw new Error("Error al cargar las propiedades.");
       }
     } catch (err) {
       console.error("Error fetching properties:", err);
