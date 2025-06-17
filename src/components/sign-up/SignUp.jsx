@@ -133,104 +133,113 @@ export default function SignUp(props) {
   };
 
   return (
-      <AppTheme {...props}>
-        <CssBaseline enableColorScheme />
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-        <SignUpContainer direction="column" justifyContent="space-between">
-          <Card variant="outlined">
-            <PawsyIcon />
-            <Typography
-                component="h1"
-                variant="h4"
-                sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+    <AppTheme {...props}>
+      <CssBaseline enableColorScheme />
+      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+      <SignUpContainer direction="column" justifyContent="space-between">
+        <Card variant="outlined">
+          <PawsyIcon />
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+          >
+            Sign up
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+          >
+            <FormControl>
+              <FormLabel htmlFor="name">Full name</FormLabel>
+              <TextField
+                autoComplete="name"
+                name="name"
+                required
+                fullWidth
+                id="name"
+                placeholder="Jon Snow"
+                error={nameError}
+                helperText={nameErrorMessage}
+                color={nameError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                placeholder="your@email.com"
+                name="email"
+                autoComplete="email"
+                variant="outlined"
+                error={emailError}
+                helperText={emailErrorMessage}
+                color={passwordError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="tel">Phone Number</FormLabel>
+              <TextField
+                required
+                fullWidth
+                id="phone"
+                placeholder="1234567890"
+                name="phone"
+                autoComplete="tel"
+                variant="outlined"
+                error={phoneError}
+                helperText={phoneErrorMessage}
+                color={phoneError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                placeholder="••••••"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                variant="outlined"
+                error={passwordError}
+                helperText={passwordErrorMessage}
+                color={passwordError ? 'error' : 'primary'}
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={validateInputs}
             >
               Sign up
-            </Typography>
-            <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-            >
-              <FormControl>
-                <FormLabel htmlFor="name">Full name</FormLabel>
-                <TextField
-                    autoComplete="name"
-                    name="name"
-                    required
-                    fullWidth
-                    id="name"
-                    placeholder="Jon Snow"
-                    error={nameError}
-                    helperText={nameErrorMessage}
-                    color={nameError ? 'error' : 'primary'}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    placeholder="your@email.com"
-                    name="email"
-                    autoComplete="email"
-                    variant="outlined"
-                    error={emailError}
-                    helperText={emailErrorMessage}
-                    color={emailError ? 'error' : 'primary'}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="tel">Phone Number</FormLabel>
-                <TextField
-                    required
-                    fullWidth
-                    id="phone"
-                    placeholder="1234567890"
-                    name="phone"
-                    autoComplete="tel"
-                    variant="outlined"
-                    error={phoneError}
-                    helperText={phoneErrorMessage}
-                    color={phoneError ? 'error' : 'primary'}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    placeholder="••••••"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    variant="outlined"
-                    error={passwordError}
-                    helperText={passwordErrorMessage}
-                    color={passwordError ? 'error' : 'primary'}
-                />
-              </FormControl>
-              <Button type="submit" fullWidth variant="contained">
-                Sign up
-              </Button>
-            </Box>
-          </Card>
-        </SignUpContainer>
-      </AppTheme>
+            </Button>
+          </Box>
+        </Card>
+      </SignUpContainer>
+    </AppTheme>
   );
 }
 
 async function handleSignUp(user) {
   try {
-    const response = await userApi.signUp(user);
-    console.log('Token recibido:', response.token);
-
-    // Mostrar mensaje y redirigir
-    alert('Cuenta creada con éxito. Por favor verifica tu cuenta en Gmail.');
-    window.location.href = '/';
-  } catch (error) {
-    console.error('Error signing up:', error);
-    alert('Error al registrarse. Inténtalo de nuevo.');
-  }
+      const response = await userApi.signUp(user);
+      console.log(response);
+      console.log(response.token);
+      localStorage.setItem('token', response.token);
+      // alert("try?");
+      if(response.ok){
+        alert("Registrado correctamente, para iniciar sesión confirma tu dirección de correo electrónico.");
+        window.location.href = '/user-profile';
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+      alert('Error signing up. Please try again.');
+      return;
+    }
 }
