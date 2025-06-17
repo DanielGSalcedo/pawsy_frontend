@@ -117,9 +117,9 @@ export default function UserProfile() {
                 <Typography variant="body1"><strong>Email:</strong> {user.email}</Typography>
               </Stack>
 
-              {/* <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="body1"><strong>Dirección:</strong> {user.direccion}</Typography>
-              </Stack> */}
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="body1"><strong>Tipo:</strong> {user.tipoUsuario}</Typography>
+              </Stack>
 
               <Button
                 variant="contained"
@@ -156,6 +156,25 @@ export default function UserProfile() {
                 onClick={() => navigate('/pet-list')}
               >
                 My Pets
+              </Button>
+
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                  borderRadius: 2,
+                  '&:hover': {
+                    backgroundColor: theme => theme.palette.primary.dark,
+                    boxShadow: theme => `0 4px 20px ${theme.palette.primary.main}55`,
+                  },
+                }}
+                onClick={() => navigate('/properties-menu')}
+              >
+                My Properties
               </Button>
 
               <Divider sx={{ width: '100%', my: 1 }} />

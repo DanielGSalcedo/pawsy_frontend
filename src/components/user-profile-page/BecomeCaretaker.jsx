@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -93,37 +93,25 @@ const StyledTextarea = styled("textarea")(({ theme }) => ({
   },
 }));
 
-export default function EditProfile() {
-  const { id } = useParams();
+export default function BecomeCaretaker() {
   const [form, setForm] = useState(null);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Simulación de carga de datos
-    // const timer = setTimeout(() => {
-    //   setForm({
-    //     nombre: 'Max',
-    //     tipo: 'Perro',
-    //     edad: '3',
-    //     descripcion: 'Amigable y juguetón. Le encanta correr en el parque.',
-    //   });
-    // }, 500);
-
-    // return () => clearTimeout(timer);
-
-    const user = fetchUserProfile();
-    setForm(user);
-  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
+  useEffect(() => {
+    setForm({
+      telefono: ""
+    });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSaving(true);
+    // setSaving(true);
     // setTimeout(() => {
     //   console.log('Mascota actualizada:', form);
     //   alert('Cambios guardados (simulado)');
@@ -131,10 +119,10 @@ export default function EditProfile() {
     //   navigate(`/perfil/${id}`);
     // }, 1000);
 
-    if (saveUserProfile(form)) {
+    if (becomeCaretaker(form.telefono)) {
       alert("Cambios guardados correctamente");
       setSaving(false);
-      navigate(`/perfil/${id}`);
+      navigate(`/user-profile`);
     }
   };
 
@@ -155,7 +143,7 @@ export default function EditProfile() {
         <Card>
           <Stack alignItems="center" spacing={1}>
             <Typography variant="h5" fontWeight="bold">
-              Editar Perfil
+              Convertirse a cuidador
             </Typography>
           </Stack>
 
@@ -164,12 +152,12 @@ export default function EditProfile() {
           <Box component="form" onSubmit={handleSubmit}>
             <Field>
               <Typography variant="body2" color="text.secondary" mb={0.5}>
-                Nombre *
+                Teléfono *
               </Typography>
               <StyledInput
-                type="text"
-                name="nombre"
-                value={form.nombre}
+                type="number"
+                name="telefono"
+                value={form.telefono}
                 onChange={handleChange}
                 required
               />
@@ -186,6 +174,10 @@ export default function EditProfile() {
                 required
               />
             </Field> */}
+            {/* <FormControlLabel
+              control={<Checkbox value="cuidador" color="primary" />}
+              label="Ser cuidador *"
+            /> */}
 
             {/* <Field>
               <Typography variant="body2" color="text.secondary" mb={0.5}>
@@ -213,26 +205,6 @@ export default function EditProfile() {
               />
             </Field> */}
 
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{
-                mt: 2,
-                textTransform: "none",
-                fontWeight: 600,
-                letterSpacing: 0.5,
-                borderRadius: 2,
-                "&:hover": {
-                  backgroundColor: (theme) => theme.palette.primary.dark,
-                  boxShadow: (theme) =>
-                    `0 4px 20px ${theme.palette.primary.main}55`,
-                },
-              }}
-              onClick={() => navigate("/become-caretaker")}
-            >
-              Ser cuidador
-            </Button>
-
             <Stack direction="row" spacing={2} mt={2}>
               <Button
                 variant="outlined"
@@ -258,10 +230,10 @@ export default function EditProfile() {
   );
 }
 
-async function saveUserProfile(data) {
-  const response = await userApi.updateUserProfile(
+async function becomeCaretaker(telefono) {
+  const response = await userApi.becomeCaretaker(
     localStorage.getItem("token"),
-    data
+    telefono
   );
   console.log(response);
   if (!response.ok) {
@@ -269,10 +241,4 @@ async function saveUserProfile(data) {
     console.error("Error al guardar el perfil: ", response);
     return false;
   } else return true;
-}
-
-async function fetchUserProfile() {
-  const response = await userApi.getUserProfile(localStorage.getItem("token"));
-  console.log(response);
-  return response;
 }
