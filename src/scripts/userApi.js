@@ -3,16 +3,7 @@ const API_URL = "https://api101.proyectos.fireploy.online";
 
 export const userApi = {
   async signUp(user) {
-        // console.log(user);
-        // Asegurar que siempre se use "CLIENTE" como tipoUsuario
-        const userData = {
-            email: user.email,
-            password: user.clave,
-            nombre: user.nombre,
-            // telefono: user.telefono || "", // Si no se proporciona, se usa una cadena vacía
-            tipoUsuario: "CLIENTE"
-        };
-        console.log(userData);
+        console.log(user);
 
         try {
             const response = await fetch(`${API_URL}/auth/register`, {
@@ -22,7 +13,7 @@ export const userApi = {
                     // Si necesitas una API KEY, descomenta esta línea:
                     // "x-api-key": API_KEY,
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify(user),
             });
             if (!response.ok) {
                 const errorData = await response.json();
