@@ -11,6 +11,7 @@ import RegisterPet from "./components/register-pet/RegisterPet.jsx";
 import ProfilePet from "./components/pet-profile/PetProfile.jsx";
 //Properties
 import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
+import PropertyView from "./components/see-property/SeeProperty.jsx";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/register-pet" element={<RegisterPet />} />
         <Route path="/pet-profile/:id" element={<ProfilePet />} />
         <Route path="/properties-menu" element={<PropertiesMenu />} />
+        <Route path="/property/:id" element={<PropertyView />} />
+        {/* Add more routes as needed */}
       </Routes>
     </BrowserRouter>
   );
