@@ -357,7 +357,7 @@ export default function UserProperties() {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
-                onClick={() => navigate("/add-property")}
+                onClick={() => navigate("/register-property")}
                 sx={{
                   borderRadius: 2,
                   textTransform: "none",
