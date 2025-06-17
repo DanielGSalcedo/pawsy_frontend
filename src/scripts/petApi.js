@@ -57,7 +57,7 @@ export const petApi = {
      */
     async render_types() {
         try {
-            const response = await fetch(`${API_URL}/tipos-mascota`, {
+            const response = await fetch(`${API_URL}/tipos-mascota/listar`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

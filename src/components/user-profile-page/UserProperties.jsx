@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { propertyApi } from "../../scripts/propertyApi";
+import { userApi } from "../../scripts/userApi";
 
 const DashboardContainer = styled(Stack)(({ theme }) => ({
   overflow: "auto",
@@ -181,7 +182,7 @@ const PropertyCard = ({ property, navigate }) => (
       <Button
         fullWidth
         variant="outlined"
-        onClick={() => navigate(`/propiedad/${property.id}`)}
+        onClick={() => navigate(`/property/${property.id}`)}
         sx={{
           borderRadius: 2,
           textTransform: "none",
@@ -193,7 +194,8 @@ const PropertyCard = ({ property, navigate }) => (
       <Button
         fullWidth
         variant="contained"
-        onClick={() => navigate(`/editar-propiedad/${property.id}`)}
+        // onClick={() => navigate(`/editar-propiedad/${property.id}`)}
+        onClick={() => alert("Funcionalidad no implementada")}
         sx={{
           borderRadius: 2,
           textTransform: "none",
@@ -280,6 +282,8 @@ export default function UserProperties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCaretaker, setIsCaretaker] = useState(false);
+  const [checkedProfile, setCheckedProfile] = useState(false);
   const navigate = useNavigate();
 
   const fetchProperties = async () => {
@@ -294,9 +298,18 @@ export default function UserProperties() {
       } else {
         throw new Error("Error al cargar las propiedades.");
       }
+
+      // Obtener tipo de usuario desde el perfil
+      const token = localStorage.getItem("token");
+      if (token) {
+        const userProfile = await userApi.getUserProfile(token);
+        setIsCaretaker(userProfile?.tipoUsuario === "CUIDADOR");
+      }
+      setCheckedProfile(true);
     } catch (err) {
       console.error("Error fetching properties:", err);
       setError("Error al cargar las propiedades.");
+      setCheckedProfile(true);
     } finally {
       setLoading(false);
     }
@@ -337,6 +350,55 @@ export default function UserProperties() {
             <Typography variant="h6" color="text.secondary">
               Sólo los cuidadores pueden tener propiedades
             </Typography>
+          ) : properties.length === 0 && checkedProfile && isCaretaker ? (
+            <Stack alignItems="center" spacing={3} mt={4}>
+              <Typography variant="h6" color="text.secondary">
+                No tienes propiedades registradas
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => navigate("/register-property")}
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  px: 4,
+                  py: 1.5,
+                  boxShadow: "none",
+                  "&:hover": {
+                    boxShadow: (theme) =>
+                      `0 4px 12px ${theme.palette.primary.main}40`,
+                  },
+                }}
+              >
+                Añadir propiedad
+              </Button>
+            </Stack>
+          ) : properties.length === 0 && checkedProfile && !isCaretaker ? (
+            <Stack alignItems="center" spacing={3} mt={4}>
+              <Typography variant="h6" color="text.secondary">
+                Sólo los cuidadores pueden tener propiedades
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/user-profile")}
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  px: 4,
+                  py: 1.5,
+                  boxShadow: "none",
+                  "&:hover": {
+                    boxShadow: (theme) =>
+                      `0 4px 12px ${theme.palette.primary.main}40`,
+                  },
+                }}
+              >
+                Ir a mi perfil
+              </Button>
+            </Stack>
           ) : properties.length === 0 ? (
             <Typography variant="h6" color="text.secondary">
               No tienes propiedades registradas
@@ -355,10 +417,48 @@ export default function UserProperties() {
                   <PropertyCard property={property} navigate={navigate} />
                 </Grid>
               ))}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                key="add-property"
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                <AddPropertyCard onClick={() => navigate("/register-property")}>
+                  <AddIcon fontSize="large" color="action" sx={{ mb: 1, fontSize: 48 }} />
+                  <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 500 }}>
+                    Añadir nueva propiedad
+                  </Typography>
+                </AddPropertyCard>
+              </Grid>
             </Grid>
           )}
         </Box>
       </DashboardContainer>
+      {/* Botón flotante para eliminar propiedades */}
+      {!loading && properties.length > 0 && !error && (
+        <Fab
+          color="error"
+          aria-label="eliminar"
+          onClick={() => navigate('/remove-property')}
+          sx={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 1000,
+            backgroundColor: 'error.main',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: 'error.dark',
+              transform: 'scale(1.05)',
+            },
+            transition: 'transform 0.2s, background-color 0.2s',
+          }}
+        >
+          <DeleteIcon />
+        </Fab>
+      )}
       {/* Snackbar para mostrar errores */}
       <Snackbar
         open={!!error}

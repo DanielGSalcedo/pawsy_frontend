@@ -1,6 +1,3 @@
-//REGISTER PET
-
-import * as React from "react";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -11,19 +8,17 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { PawsyIcon } from "../sign-up/CustomIcons";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { petApi } from "../../scripts/petApi";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from 'react-router-dom';
+import { propertyApi } from "../../scripts/propertyApi";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
-const RegisterPetContainer = styled(Stack)(({ theme }) => ({
+const RegisterPropertyContainer = styled(Stack)(({ theme }) => ({
   height: "calc(100vh - 80px)",
   minWidth: "calc(100vw - 80px)",
   margin: 40,
@@ -70,35 +65,22 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-export default function RegisterPet(props) {
-  const [nameError, setNameError] = React.useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = React.useState("");
-  const [edad, setEdad] = React.useState("");
-  const [tipo, setTipo] = React.useState(1);
-  const [descripcion, setDescripcion] = React.useState("");
-  const [nombre, setNombre] = React.useState("");
-  const [imageUrl, setImageUrl] = React.useState("");
-  const navigate = useNavigate();
-
-  // Nuevas
-  const [petTypes, setPetTypes] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function RegisterProperty(props) {
+  const [nameError, setNameError] = useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
+  const [direccionError, setDireccionError] = useState(false);
+  const [direccionErrorMessage, setDireccionErrorMessage] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [capacidad, setCapacidad] = useState(1);
+  const [descripcion, setDescripcion] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
 
   useEffect(() => {
-    const fetchPetTypes = async () => {
-      try {
-        setLoading(true);
-        const types = await petApi.render_types();
-        setPetTypes(types);
-      } catch (error) {
-        console.error("Error loading pet types:", error);
-        // You might want to show an error message to the user
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPetTypes();
+    propertyApi.render_services().then(setServices).catch(() => setServices([]));
   }, []);
 
   const validateInputs = () => {
@@ -110,6 +92,14 @@ export default function RegisterPet(props) {
     } else {
       setNameError(false);
       setNameErrorMessage("");
+    }
+    if (!direccion || direccion.length < 1) {
+      setDireccionError(true);
+      setDireccionErrorMessage("La dirección es obligatoria.");
+      isValid = false;
+    } else {
+      setDireccionError(false);
+      setDireccionErrorMessage("");
     }
     return isValid;
   };
@@ -127,42 +117,52 @@ export default function RegisterPet(props) {
     }
   };
 
+  const handleServiceChange = (id) => {
+    setSelectedServices((prev) =>
+      prev.includes(id)
+        ? prev.filter((sid) => sid !== id)
+        : [...prev, id]
+    );
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateInputs()) return;
-    const pet = {
-      edad: Number(edad),
-      tipoId: Number(tipo),
+    const property = {
+      precioPorNoche: Number(precio),
+      capacidad: Number(capacidad),
       nombre,
       descripcion,
+      direccion,
+      fotos: imageUrl
+        ? [{ descripcion: "Foto principal", url: imageUrl }]
+        : [],
+      serviciosId: selectedServices,
     };
     try {
-      await petApi.register_pet(pet);
+      const response = await propertyApi.register_property(property);
 
-      console.log("Mascota registrada:", pet);
-      console.log("token:" + localStorage.getItem("token"));
+      console.log("Datos de propiedad:", property);
 
-      alert("Mascota registrada exitosamente");
-      window.location.href = "/user-profile";
+      if(!response.ok) {
+        const errorData = response;
+        throw new Error(`Error: ${errorData.message || "Unknown error"}`);
+      } else{
+        alert("Propiedad registrada exitosamente");
+        window.location.href = "/user-properties";
+      }
     } catch (error) {
-      console.error("Error registering pet:", error);
+      console.error("Error registering property:", error);
     }
   };
 
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <RegisterPetContainer direction="column" justifyContent="center">
+      <RegisterPropertyContainer direction="column" justifyContent="center">
         <ColorModeSelect
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
         />
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate("/user-profile")}
-          sx={{ alignSelf: "flex-start", mb: 1, textTransform: "none" }}
-        >
-          Volver       
-        </Button>
         <Card variant="outlined">
           <PawsyIcon />
           <Typography
@@ -170,7 +170,7 @@ export default function RegisterPet(props) {
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Registrar Mascota
+            Registrar Propiedad
           </Typography>
           <Box
             component="form"
@@ -206,7 +206,7 @@ export default function RegisterPet(props) {
                   <Box
                     component="img"
                     src={imageUrl}
-                    alt="Imagen de la mascota"
+                    alt="Imagen de la propiedad"
                     sx={{
                       width: "100%",
                       height: "100%",
@@ -245,12 +245,12 @@ export default function RegisterPet(props) {
             <Stack spacing={2} sx={{ flex: 1 }}>
               {/* Línea 1: Nombre */}
               <TextField
-                label="Nombre de la mascota"
+                label="Nombre de la propiedad"
                 error={nameError}
                 helperText={nameErrorMessage}
-                id="pet_name"
-                name="pet_name"
-                placeholder="Firulais"
+                id="property_name"
+                name="property_name"
+                placeholder="Casa"
                 required
                 fullWidth
                 variant="outlined"
@@ -258,53 +258,57 @@ export default function RegisterPet(props) {
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
               />
+              <TextField
+                label="Direccion de la propiedad"
+                error={direccionError}
+                helperText={direccionErrorMessage}
+                id="property_direccion"
+                name="property_direccion"
+                placeholder="Calle Falsa 123"
+                required
+                fullWidth
+                variant="outlined"
+                color={nameError ? "error" : "primary"}
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+              />
               {/* Línea 2: Edad y Tipo */}
               <Stack direction="row" spacing={2} alignItems="flex-start">
                 <TextField
-                  label="Edad"
-                  id="pet_edad"
-                  name="pet_edad"
+                  label="Precio"
+                  id="property_precio"
+                  name="property_precio"
                   type="number"
                   placeholder="0"
-                  value={edad}
-                  onChange={(e) => setEdad(e.target.value)}
+                  value={precio}
+                  onChange={(e) => setPrecio(e.target.value)}
                   size="small"
                   variant="outlined"
                   fullWidth
                 />
-                <FormControl fullWidth variant="outlined" size="small">
-                  <InputLabel id="pet_tipo_label">Tipo</InputLabel>
-                  <Select
-                    labelId="pet_tipo_label"
-                    id="pet_tipo"
-                    name="pet_tipo"
-                    value={tipo}
-                    label="Tipo"
-                    onChange={(e) => setTipo(e.target.value)}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <MenuItem value="">Cargando...</MenuItem>
-                    ) : (
-                      petTypes.map((petType) => (
-                        <MenuItem key={petType.id} value={petType.id}>
-                          {petType.nombre}
-                        </MenuItem>
-                      ))
-                    )}
-                  </Select>
-                </FormControl>
+                <TextField
+                  label="Capacidad"
+                  id="property_capacidad"
+                  name="property_capacidad"
+                  type="number"
+                  placeholder="0"
+                  value={capacidad}
+                  onChange={(e) => setCapacidad(e.target.value)}
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                />
               </Stack>
               {/* Línea 3: Descripción */}
               <FormControl fullWidth>
-                <FormLabel htmlFor="pet_descripcion" sx={{ mb: 1 }}>
+                <FormLabel htmlFor="property_descripcion" sx={{ mb: 1 }}>
                   Descripción
                 </FormLabel>
                 <Box
                   component="textarea"
-                  id="pet_descripcion"
-                  name="pet_descripcion"
-                  placeholder="Describe a tu mascota"
+                  id="property_descripcion"
+                  name="property_descripcion"
+                  placeholder="Describe a tu propiedad"
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   rows={4}
@@ -333,6 +337,27 @@ export default function RegisterPet(props) {
                 />
               </FormControl>
 
+              {/* Servicios */}
+              <FormControl component="fieldset" variant="standard">
+                <FormLabel component="legend" sx={{ mb: 1 }}>
+                  Servicios disponibles
+                </FormLabel>
+                <FormGroup>
+                  {services.map((service) => (
+                    <FormControlLabel
+                      key={service.id}
+                      control={
+                        <Checkbox
+                          checked={selectedServices.includes(service.id)}
+                          onChange={() => handleServiceChange(service.id)}
+                        />
+                      }
+                      label={service.nombre}
+                    />
+                  ))}
+                </FormGroup>
+              </FormControl>
+
               {/* Botón de Registro */}
               <Button
                 type="submit"
@@ -342,12 +367,12 @@ export default function RegisterPet(props) {
                 size="large"
                 sx={{ mt: 2 }}
               >
-                Registrar Mascota
+                Registrar Propiedad
               </Button>
             </Stack>
           </Box>
         </Card>
-      </RegisterPetContainer>
+      </RegisterPropertyContainer>
     </AppTheme>
   );
 }
