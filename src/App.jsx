@@ -15,6 +15,7 @@ import UserPetList from "./components/user-pet-list/UserPetList.jsx";
 import PetEdit from "./components/pet-edit/PetEdit.jsx";
 //Properties
 import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
+import SeeProperty from "./components/see-property/SeeProperty.jsx";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/become-caretaker" element={<BecomeCaretaker />} />
         <Route path="/pet-list" element={<UserPetList />} />
         <Route path="/pet-edit/:id" element={<PetEdit />} />
+        <Route path="/property/:id" element={<SeeProperty />} />
       </Routes>
     </BrowserRouter>
   );
