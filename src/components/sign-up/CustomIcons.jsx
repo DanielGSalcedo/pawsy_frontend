@@ -58,6 +58,12 @@ export function PawsyIcon() {
   );
 }
 
+export function PawsyIconLarge() {
+  return(
+    <img src="src/assets/perro.png" alt="pawsy logo" width={100} height={100}></img>
+  );
+}
+
 export function FacebookIcon() {
   return (
     <SvgIcon>

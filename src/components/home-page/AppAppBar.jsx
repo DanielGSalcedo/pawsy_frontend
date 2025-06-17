@@ -60,18 +60,6 @@ export default function AppAppBar() {
             >
               Pawsy
             </Typography>
-
-            <Box sx={{ display: { xs: 'none', md: 'flex' } , alignContent: 'center'}}>
-              <Button variant="text" color="info" size="small">
-                Propiedades
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Servicios
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Comentarios
-              </Button>
-            </Box>
           </Box>
           <Box
             sx={{
@@ -122,13 +110,6 @@ export default function AppAppBar() {
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-                <MenuItem>Blog</MenuItem>
-                <Divider sx={{ my: 3 }} />
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>
                     Sign up
