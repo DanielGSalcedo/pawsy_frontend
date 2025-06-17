@@ -13,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { userApi } from "../../scripts/userApi";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 // import axios from 'axios'; // Activar luego para conexión real
 
 const ProfileContainer = styled(Stack)(({ theme }) => ({
@@ -151,6 +152,13 @@ export default function EditProfile() {
   return (
     <AppTheme>
       <ColorModeSelect sx={{ position: "fixed", top: 16, right: 16 }} />
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate("/user-profile")}
+        sx={{ alignSelf: "flex-start", mb: 1, textTransform: "none" }}
+      >
+        Volver
+      </Button>
       <ProfileContainer alignItems="center" justifyContent="center">
         <Card>
           <Stack alignItems="center" spacing={1}>

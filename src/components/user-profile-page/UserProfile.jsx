@@ -95,7 +95,7 @@ export default function UserProfile() {
           <Card variant="outlined">
             <Button
               startIcon={<ArrowBackIcon />}
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/")}
               sx={{ alignSelf: 'flex-start', mb: 1, textTransform: 'none' }}
             >
               Volver

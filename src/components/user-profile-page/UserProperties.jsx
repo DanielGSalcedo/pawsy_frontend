@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { propertyApi } from "../../scripts/propertyApi";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const DashboardContainer = styled(Stack)(({ theme }) => ({
   overflow: "auto",
@@ -314,77 +315,104 @@ export default function UserProperties() {
   return (
     <AppTheme>
       <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
-      { properties.length != 0 ? (<DashboardContainer direction="column" alignItems="center">
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: "1200px",
-            mb: 4,
-            textAlign: "center",
-          }}
-        >
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            gutterBottom
-            sx={{ mt: 2, mb: 3 }}
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate("/user-profile")}
+        sx={{ alignSelf: "flex-start", mb: 1, textTransform: "none" }}
+      >
+        Volver
+      </Button>
+      {properties.length != 0 ? (
+        <DashboardContainer direction="column" alignItems="center">
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: "1200px",
+              mb: 4,
+              textAlign: "center",
+            }}
           >
-            Propiedades
-          </Typography>
-          <Divider sx={{ mb: 4 }} />
-          {loading ? (
-            <LoadingState />
-          ) : error ? (
-            <Typography variant="h6" color="text.secondary">
-              Sólo los cuidadores pueden tener propiedades
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              gutterBottom
+              sx={{ mt: 2, mb: 3 }}
+            >
+              Propiedades
             </Typography>
-          ) : properties.length === 0 ? (
-            <Typography variant="h6" color="text.secondary">
-              No tienes propiedades registradas
-            </Typography>
-          ) : (
-            <Grid container spacing={4} justifyContent="center">
-              {properties.map((property) => (
+            <Divider sx={{ mb: 4 }} />
+            {loading ? (
+              <LoadingState />
+            ) : error ? (
+              <Typography variant="h6" color="text.secondary">
+                Sólo los cuidadores pueden tener propiedades
+              </Typography>
+            ) : properties.length === 0 ? (
+              <Typography variant="h6" color="text.secondary">
+                No tienes propiedades registradas
+              </Typography>
+            ) : (
+              <Grid container spacing={4} justifyContent="center">
+                {properties.map((property) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    key={property.id}
+                    sx={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <PropertyCard property={property} navigate={navigate} />
+                  </Grid>
+                ))}
                 <Grid
                   item
                   xs={12}
                   sm={6}
                   md={4}
-                  key={property.id}
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
-                  <PropertyCard property={property} navigate={navigate} />
+                  <AddPropertyCard
+                    onClick={() => navigate("/register-property")}
+                  >
+                    <AddIcon
+                      fontSize="large"
+                      color="action"
+                      sx={{ mb: 1, fontSize: 48 }}
+                    />
+                    <Typography
+                      variant="h6"
+                      color="text.secondary"
+                      sx={{ fontWeight: 500 }}
+                    >
+                      Añadir nueva propiedad
+                    </Typography>
+                  </AddPropertyCard>
                 </Grid>
-              ))}
-              <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <AddPropertyCard onClick={() => navigate('/register-property')}>
-                  <AddIcon fontSize="large" color="action" sx={{ mb: 1, fontSize: 48 }} />
-                  <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 500 }}>
-                    Añadir nueva propiedad
-                  </Typography>
-                </AddPropertyCard>
               </Grid>
-            </Grid>
-          )}
-        </Box>
-      </DashboardContainer>) : (<EmptyState navigate={navigate} />)}
+            )}
+          </Box>
+        </DashboardContainer>
+      ) : (
+        <EmptyState navigate={navigate} />
+      )}
       {!loading && properties.length > 0 && !error && (
         <Fab
           color="error"
           aria-label="eliminar"
-          onClick={() => navigate('/remove-property')}
+          onClick={() => navigate("/remove-property")}
           sx={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
+            position: "fixed",
+            bottom: "2rem",
+            right: "2rem",
             zIndex: 1000,
-            backgroundColor: 'error.main',
-            color: 'white',
-            '&:hover': {
-              backgroundColor: 'error.dark',
-              transform: 'scale(1.05)',
+            backgroundColor: "error.main",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "error.dark",
+              transform: "scale(1.05)",
             },
-            transition: 'transform 0.2s, background-color 0.2s',
+            transition: "transform 0.2s, background-color 0.2s",
           }}
         >
           <DeleteIcon />

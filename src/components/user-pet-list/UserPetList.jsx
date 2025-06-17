@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { petApi } from '../../scripts/petApi';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const DashboardContainer = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
@@ -322,6 +323,13 @@ export default function UserPetList() {
   return (
     <AppTheme>
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate("/user-profile")}
+        sx={{ alignSelf: "flex-start", mb: 1, textTransform: "none" }}
+      >
+        Volver
+      </Button>
       <DashboardContainer direction="column" alignItems="center">
         <Box sx={{
           width: '100%',
