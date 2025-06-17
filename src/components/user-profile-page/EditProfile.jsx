@@ -131,7 +131,7 @@ export default function EditProfile() {
     //   navigate(`/perfil/${id}`);
     // }, 1000);
 
-    if (saveUserProfile(form)) {
+    if (saveUserProfile(form.nombre)) {
       alert("Cambios guardados correctamente");
       setSaving(false);
       navigate(`/perfil/${id}`);
