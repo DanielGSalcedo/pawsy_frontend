@@ -82,7 +82,7 @@ export default function UserProfile() {
     // return () => clearTimeout(timer);
 
     // ⚠️ Código real para usar luego:
-    const user = fetchUserProfile(id);
+    const user = fetchUserProfile();
     setUser(user);
     setLoading(false);
   }, [id]);
@@ -192,8 +192,8 @@ export default function UserProfile() {
 function logOut(){
   localStorage.removeItem('token');
 }
-async function fetchUserProfile(id) {
-  const response = await userApi.getUserProfile(id);
+async function fetchUserProfile() {
+  const response = await userApi.getUserProfile(localStorage.getItem('token'));
   console.log(response);
   return await response.json();
 }
