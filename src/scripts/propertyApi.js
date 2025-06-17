@@ -36,7 +36,7 @@ export const propertyApi = {
      */
     async render_properties() {
         try {
-            const response = await fetch(`${PROPERTY_API_URL}/propiedades`, {
+            const response = await fetch(`https://pawsy-backend.onrender.com/api/propiedades`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

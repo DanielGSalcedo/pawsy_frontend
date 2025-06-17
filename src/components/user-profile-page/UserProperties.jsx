@@ -21,6 +21,7 @@ import AppTheme from "../shared-theme/AppTheme";
 import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { propertyApi } from "../../scripts/propertyApi";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { userApi } from "../../scripts/userApi";
 
 const DashboardContainer = styled(Stack)(({ theme }) => ({
   overflow: "auto",
@@ -281,6 +282,8 @@ export default function UserProperties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCaretaker, setIsCaretaker] = useState(false);
+  const [checkedProfile, setCheckedProfile] = useState(false);
   const navigate = useNavigate();
 
   const fetchProperties = async () => {
@@ -296,9 +299,18 @@ export default function UserProperties() {
       } else {
         throw new Error("Error al cargar las propiedades.");
       }
+
+      // Obtener tipo de usuario desde el perfil
+      const token = localStorage.getItem("token");
+      if (token) {
+        const userProfile = await userApi.getUserProfile(token);
+        setIsCaretaker(userProfile?.tipoUsuario === "CUIDADOR");
+      }
+      setCheckedProfile(true);
     } catch (err) {
       console.error("Error fetching properties:", err);
       setError("Error al cargar las propiedades.");
+      setCheckedProfile(true);
     } finally {
       setLoading(false);
     }
