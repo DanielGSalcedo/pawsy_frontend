@@ -24,6 +24,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
+import { petApi } from '../../scripts/petApi.js'; // Asegúrate de que la ruta sea correcta
 
 // Estilos idénticos a la vista original
 const DashboardContainer = styled(Stack)(({ theme }) => ({
@@ -51,10 +52,14 @@ const DashboardContainer = styled(Stack)(({ theme }) => ({
 
 const StyledCard = styled('div')(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
   width: '100%',
+  minWidth: 0,
+  height: 180, // <--- Disminuido el alto de 240 a 180
   padding: theme.spacing(3),
-  gap: theme.spacing(2),
+  gap: theme.spacing(3),
   borderRadius: theme.spacing(2),
   backgroundColor: theme.palette.background.paper,
   boxShadow:
@@ -72,6 +77,9 @@ const StyledCard = styled('div')(({ theme }) => ({
   }),
 }));
 
+const truncateText = (text, maxLength = 18) =>
+  text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+
 // Componente de tarjeta para eliminar
 const DeletePetCard = ({ pet, onDelete }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -79,14 +87,32 @@ const DeletePetCard = ({ pet, onDelete }) => {
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
 
-  const handleConfirmDelete = () => {
-    onDelete(pet.id);
-    handleCloseDialog();
+  // Confirmación: solo llama a onDelete si el usuario confirma
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await fetch(`https://api101.proyectos.fireploy.online/api/mascota/${pet.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      onDelete(pet.id);
+      window.location.reload(); // Refresca la página tras eliminar
+    } catch (err) {
+      alert('Error al eliminar la mascota');
+    } finally {
+      handleCloseDialog();
+    }
   };
 
   return (
     <StyledCard>
-      <Stack alignItems="center" spacing={1.5}>
+      {/* Imagen y nombre en columna */}
+      <Stack alignItems="center" spacing={1} sx={{ minWidth: 120 }}>
         <Avatar
           sx={{
             width: 80,
@@ -98,12 +124,30 @@ const DeletePetCard = ({ pet, onDelete }) => {
         >
           <PetsIcon fontSize="large" sx={{ color: 'white' }} />
         </Avatar>
-        
-        <Typography variant="h6" fontWeight="bold">
-          {pet.nombre}
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{
+            maxWidth: 120,
+            textAlign: 'center',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+          title={pet.nombre}
+        >
+          {truncateText(pet.nombre)}
         </Typography>
-        
-        <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
+      </Stack>
+      {/* Info y descripción */}
+      <Stack
+        direction="row"
+        spacing={3}
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ flexGrow: 1, minWidth: 0 }}
+      >
+        <Stack spacing={1} alignItems="center" minWidth={100}>
           <Typography variant="body2" color="text.secondary">
             {pet.tipo}
           </Typography>
@@ -111,11 +155,7 @@ const DeletePetCard = ({ pet, onDelete }) => {
             {pet.edad} años
           </Typography>
         </Stack>
-        
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          textAlign="center"
+        <Box
           sx={theme => ({
             px: 2,
             py: 1.5,
@@ -124,24 +164,57 @@ const DeletePetCard = ({ pet, onDelete }) => {
               theme.palette.mode === 'dark'
                 ? 'rgba(255, 255, 255, 0.05)'
                 : 'rgba(0, 0, 0, 0.04)',
+            width: 220,
+            height: 56,
+            overflow: 'auto',
+            textAlign: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           })}
         >
-          {pet.descripcion}
-        </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              width: '100%',
+              maxHeight: 56,
+              overflow: 'auto',
+              textAlign: 'center',
+              wordBreak: 'break-word',
+              '&::-webkit-scrollbar': {
+                width: '4px',
+              },
+              '&::-webkit-scrollbar-track': {
+                background: 'transparent',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: theme => theme.palette.divider,
+                borderRadius: '2px',
+              },
+              '&::-webkit-scrollbar-thumb:hover': {
+                background: theme => theme.palette.text.disabled,
+              },
+            }}
+          >
+            {pet.descripcion}
+          </Typography>
+        </Box>
       </Stack>
-
+      {/* Botón eliminar */}
       <Button
-        fullWidth
         variant="contained"
         color="error"
         startIcon={<DeleteIcon />}
         onClick={handleOpenDialog}
-        sx={{ 
-          mt: 3,
+        sx={{
           borderRadius: 2,
           textTransform: 'none',
           fontWeight: 600,
           boxShadow: 'none',
+          maxWidth: 180,
+          alignSelf: 'center',
+          ml: 2,
           '&:hover': {
             boxShadow: theme => `0 4px 12px ${theme.palette.error.main}40`,
           },
@@ -149,7 +222,6 @@ const DeletePetCard = ({ pet, onDelete }) => {
       >
         Eliminar Mascota
       </Button>
-
       {/* Diálogo de confirmación */}
       <Dialog
         open={openDialog}
@@ -214,45 +286,6 @@ const EmptyState = ({ navigate }) => (
   </Stack>
 );
 
-// Datos de ejemplo (mismos que la vista original)
-const samplePets = [
-  {
-    id: 1,
-    nombre: 'Max',
-    tipo: 'Perro',
-    edad: 3,
-    descripcion: 'Amigable y juguetón. Le encanta correr en el parque y jugar con pelotas.',
-  },
-  {
-    id: 2,
-    nombre: 'Luna',
-    tipo: 'Gato',
-    edad: 2,
-    descripcion: 'Muy curiosa y le gusta dormir al sol. Tímida al principio pero cariñosa cuando confía.',
-  },
-  {
-    id: 3,
-    nombre: 'Rocky',
-    tipo: 'Perro',
-    edad: 5,
-    descripcion: 'Tranquilo y protector. Excelente compañero para caminatas largas.',
-  },
-  {
-    id: 4,
-    nombre: 'Mia',
-    tipo: 'Gato',
-    edad: 1,
-    descripcion: 'Energética y juguetona. Siempre buscando nuevas aventuras en casa.',
-  },
-  {
-    id: 5,
-    nombre: 'Toby',
-    tipo: 'Conejo',
-    edad: 2,
-    descripcion: 'Tranquilo y amigable. Le encanta mordisquear zanahorias y jugar en el jardín.',
-  },
-];
-
 export default function DeletePetsView() {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -260,91 +293,26 @@ export default function DeletePetsView() {
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
-  // Función para obtener mascotas (con datos de prueba y preparado para backend)
+  // Obtener mascotas desde la API
   const fetchPets = async () => {
     try {
       setLoading(true);
       setError(null);
-      
-      // Obtener ID de usuario (ejemplo)
-      const userId = localStorage.getItem('userId') || 1;
-      
-      // *******************************************
-      // CONEXIÓN CON BACKEND (DESCOMENTAR CUANDO ESTÉ LISTO)
-      // *******************************************
-      /*
-      // Opción 1: Usando fetch
-      const response = await fetch(`http://localhost:4000/api/usuarios/${userId}/mascotas`);
-      
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const data = await petApi.render_pets();
       setPets(data);
-      
-      // Opción 2: Usando axios
-      /*
-      import axios from 'axios';
-      const response = await axios.get(`http://localhost:4000/api/usuarios/${userId}/mascotas`);
-      setPets(response.data);
-      */
-      
-      // Simular tiempo de respuesta del backend
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      // En desarrollo, usamos datos de ejemplo
-      setPets(samplePets);
-      
     } catch (err) {
       console.error('Error fetching pets:', err);
-      setError('Error al cargar las mascotas. Mostrando datos de ejemplo.');
-      
-      // Mostrar datos de ejemplo en caso de error
-      setPets(samplePets.slice(0, 3));
+      setError('Error al cargar las mascotas.');
+      setPets([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Función para eliminar mascota (con datos de prueba y preparado para backend)
-  const deletePet = async (petId) => {
-    try {
-      // *******************************************
-      // CONEXIÓN CON BACKEND (DESCOMENTAR CUANDO ESTÉ LISTO)
-      // *******************************************
-      /*
-      // Opción 1: Usando fetch
-      const response = await fetch(`http://localhost:4000/api/mascotas/${petId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer your-token' // si es necesario
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-      
-      // Opción 2: Usando axios
-      /*
-      import axios from 'axios';
-      const response = await axios.delete(`http://localhost:4000/api/mascotas/${petId}`);
-      */
-      
-      // Simular tiempo de eliminación
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Actualizar estado local (eliminar de la lista)
-      setPets(prevPets => prevPets.filter(pet => pet.id !== petId));
-      
-      setSuccess('Mascota eliminada correctamente');
-      
-    } catch (err) {
-      console.error('Error deleting pet:', err);
-      setError('Error al eliminar la mascota');
-    }
+  // Eliminar mascota usando el endpoint real
+  const deletePet = (petId) => {
+    setPets(prevPets => prevPets.filter(pet => pet.id !== petId));
+    setSuccess('Mascota eliminada correctamente');
   };
 
   useEffect(() => {
@@ -414,10 +382,9 @@ export default function DeletePetsView() {
                   Reintentar conexión
                 </Button>
               </Stack>
-              
-              <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
+              <Grid container spacing={3} direction="column" alignItems="center" sx={{ mt: 4 }}>
                 {pets.map(pet => (
-                  <Grid item xs={12} sm={6} md={4} key={pet.id}>
+                  <Grid item xs={12} key={pet.id} sx={{ width: '100%' }}>
                     <DeletePetCard pet={pet} onDelete={deletePet} />
                   </Grid>
                 ))}
@@ -426,9 +393,9 @@ export default function DeletePetsView() {
           ) : pets.length === 0 ? (
             <EmptyState navigate={navigate} />
           ) : (
-            <Grid container spacing={3} justifyContent="center">
+            <Grid container spacing={3} direction="column" alignItems="center">
               {pets.map(pet => (
-                <Grid item xs={12} sm={6} md={4} key={pet.id}>
+                <Grid item xs={12} key={pet.id} sx={{ width: '100%' }}>
                   <DeletePetCard pet={pet} onDelete={deletePet} />
                 </Grid>
               ))}
