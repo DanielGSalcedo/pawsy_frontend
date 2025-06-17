@@ -18,6 +18,8 @@ import PropertiesMenu from "./components/property-menu/PropertiesMenu.jsx";
 import UserProperties from "./components/user-profile-page/UserProperties.jsx";
 import SeeProperty from "./components/see-property/SeeProperty.jsx";
 
+import SeeActiveRents from "./components/active-rents/ActiveRents.jsx";
+
 function App() {
   return (
     <BrowserRouter>
@@ -37,6 +39,8 @@ function App() {
         <Route path="/pet-edit/:id" element={<PetEdit />} />
         <Route path="/user-properties" element={<UserProperties />} />
         <Route path="/property/:id" element={<SeeProperty />} />
+        <Route path="/view-active-rents" element={<SeeActiveRents />} />
+        {/* Add more routes as needed */}
       </Routes>
     </BrowserRouter>
   );

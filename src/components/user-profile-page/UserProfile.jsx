@@ -178,26 +178,49 @@ export default function UserProfile() {
               </Button>
 
               <Divider sx={{ width: '100%', my: 1 }} />
-              <Button
-                variant="text"
-                fullWidth
-                sx={{
-                  mt: 1,
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  letterSpacing: 0.5,
-                  borderRadius: 2,
-                  backgroundColor: 'rgba(255, 0, 0, 0.85)',
-                  backgroundImage: 'none',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 0, 0, 0.6)',
-                    boxShadow: `0 4px 20px ${'red'}55`,
-                  },
-                }}
-                onClick={() => {logOut(); navigate('/');}}
-              >
-                Log out
-              </Button>
+              <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+                <Button
+                  variant="text"
+                  fullWidth
+                  sx={{
+                    mt: 1,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    letterSpacing: 0.5,
+                    borderRadius: 2,
+                    backgroundColor: 'rgba(255, 0, 0, 0.85)',
+                    backgroundImage: 'none',
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                      boxShadow: `0 4px 20px ${'red'}55`,
+                    },
+                  }}
+                  onClick={() => {logOut(); navigate('/');}}
+                >
+                  Log out
+                </Button>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    mt: 1,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    letterSpacing: 0.5,
+                    borderRadius: 2,
+                    backgroundColor: theme => theme.palette.success.main,
+                    color: theme => theme.palette.success.contrastText,
+                    '&:hover': {
+                      backgroundColor: theme => theme.palette.success.dark,
+                      boxShadow: theme => `0 4px 20px ${theme.palette.success.main}55`,
+                    },
+                  }}
+                  onClick={() => navigate('/view-active-rents')}
+                >
+                  Ver reservas
+                </Button>
+              </Box>
             </Box>
           </Card>
         )}
