@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import PetsIcon from '@mui/icons-material/Pets';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete'; // Nuevo ícono añadido
+import HomeIcon from '@mui/icons-material/HomeWork';
 import { useNavigate } from 'react-router-dom';
 import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
@@ -369,26 +370,48 @@ export default function UserPetList() {
       </DashboardContainer>
       {/* Botón flotante para eliminar mascotas (FAB) */}
       {!loading && pets.length > 0 && !error && (
-        <Fab
-          color="error"
-          aria-label="eliminar"
-          onClick={() => navigate('/remove-pet')}
-          sx={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            zIndex: 1000,
-            backgroundColor: 'error.main',
-            color: 'white',
-            '&:hover': {
-              backgroundColor: 'error.dark',
-              transform: 'scale(1.05)',
-            },
-            transition: 'transform 0.2s, background-color 0.2s',
-          }}
-        >
-          <DeleteIcon />
-        </Fab>
+        <>
+          <Fab
+            color="error"
+            aria-label="eliminar"
+            onClick={() => navigate('/remove-pet')}
+            sx={{
+              position: 'fixed',
+              bottom: '2rem',
+              right: '2rem',
+              zIndex: 1000,
+              backgroundColor: 'error.main',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: 'error.dark',
+                transform: 'scale(1.05)',
+              },
+              transition: 'transform 0.2s, background-color 0.2s',
+            }}
+          >
+            <DeleteIcon />
+          </Fab>
+          <Fab
+            color="primary"
+            aria-label="propiedades"
+            onClick={() => navigate('/properties-menu')}
+            sx={{
+              position: 'fixed',
+              bottom: '2rem',
+              right: '6.5rem',
+              zIndex: 1000,
+              backgroundColor: 'primary.main',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+                transform: 'scale(1.05)',
+              },
+              transition: 'transform 0.2s, background-color 0.2s',
+            }}
+          >
+            <HomeIcon />
+          </Fab>
+        </>
       )}
 
       {/* Snackbar para mostrar errores */}
