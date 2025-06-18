@@ -140,7 +140,7 @@ export default function SeeProperty() {
           <Card variant="outlined">
             <Button
               startIcon={<ArrowBackIcon />}
-              onClick={() => navigate("/properties-menu")}
+              onClick={() => navigate("/user-properties")}
               sx={{ alignSelf: "flex-start", mb: 1, textTransform: "none" }}
             >
               Volver
