@@ -63,8 +63,6 @@ export default function SignUp(props) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
-  const [phoneError, setPhoneError] = React.useState(false);
-  const [phoneErrorMessage, setPhoneErrorMessage] = React.useState('');
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -181,21 +179,6 @@ export default function SignUp(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="tel">Phone Number</FormLabel>
-              <TextField
-                required
-                fullWidth
-                id="phone"
-                placeholder="1234567890"
-                name="phone"
-                autoComplete="tel"
-                variant="outlined"
-                error={phoneError}
-                helperText={phoneErrorMessage}
-                color={phoneError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
               <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
                 required
@@ -235,7 +218,7 @@ async function handleSignUp(user) {
       // alert("try?");
       if(response.ok){
         alert("Registrado correctamente, para iniciar sesión confirma tu dirección de correo electrónico.");
-        window.location.href = '/user-profile';
+        window.location.href = '/sign-in';
       }
     } catch (error) {
       console.error('Error signing up:', error);
