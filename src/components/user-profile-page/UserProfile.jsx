@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
 import { userApi } from '../../scripts/userApi';
 // import axios from 'axios'; // Listo para usar después
 
@@ -94,11 +94,11 @@ export default function UserProfile() {
         ) : (
           <Card variant="outlined">
             <Button
-              startIcon={<ArrowBackIcon />}
-              onClick={() => navigate(-1)}
+              startIcon={<HomeIcon />}
+              onClick={() => navigate("/")}
               sx={{ alignSelf: 'flex-start', mb: 1, textTransform: 'none' }}
             >
-              Volver
+              Home
             </Button>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
