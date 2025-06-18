@@ -68,7 +68,6 @@ export default function SignUp(props) {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
     const name = document.getElementById('name');
-    const phone = document.getElementById('phone');
 
     let isValid = true;
 
@@ -88,15 +87,6 @@ export default function SignUp(props) {
     } else {
       setPasswordError(false);
       setPasswordErrorMessage('');
-    }
-
-    if (!phone.value || phone.value.length < 10) {
-      setPhoneError(true);
-      setPhoneErrorMessage('Must be a valid phone number');
-      isValid = false;
-    } else {
-      setPhoneError(false);
-      setPhoneErrorMessage('');
     }
 
     if (!name.value || name.value.length < 1) {
